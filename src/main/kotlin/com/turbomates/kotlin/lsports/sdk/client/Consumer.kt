@@ -1,4 +1,4 @@
-package com.turbomates.kotlin.lsports.sdk.rabbit
+package com.turbomates.kotlin.lsports.sdk.client
 
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Connection

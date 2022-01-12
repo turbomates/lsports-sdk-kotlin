@@ -14,7 +14,6 @@ repositories {
 dependencies {
     api(deps.rabbitmq.amqp.client)
     api(deps.log4j.slf4j)
-    api(deps.hoplite)
 }
 
 tasks.withType<KotlinCompile> {

@@ -20,6 +20,7 @@ class LSportClient(
         Consumer(listener, connectionFactory.newConnection())
             .consume(queueName)
     }
+
 }
 
 private fun configureRabbitMq(config: LSportClientConfig): ConnectionFactory {

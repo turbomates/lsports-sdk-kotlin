@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm").version(deps.versions.kotlin)
+    alias(deps.plugins.detekt)
 }
 
 group = "com.turbomates.kotlin.lsports-sdk"
@@ -13,6 +14,7 @@ repositories {
 
 dependencies {
     api(deps.rabbitmq.amqp.client)
+    api(deps.log4j.slf4j)
 }
 
 tasks.withType<KotlinCompile> {
@@ -32,4 +34,20 @@ tasks.withType<KotlinCompile> {
 
 configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_15
+}
+
+detekt {
+    toolVersion = deps.versions.detekt.get()
+    buildUponDefaultConfig = true
+    ignoreFailures = false
+    parallel = true
+    allRules = false
+    config = files("detekt.yml")
+    baseline = file("detekt-baseline.xml")
+    reports {
+        xml.enabled = true
+        html.enabled = false
+        txt.enabled = false
+        sarif.enabled = false
+    }
 }

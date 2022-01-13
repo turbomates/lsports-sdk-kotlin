@@ -28,7 +28,6 @@ private class DeliverCallbackListener(
 ): DeliverCallback {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Suppress("UNCHECKED_CAST")
     override fun handle(consumerTag: String?, message: Delivery) {
         try {
             handler.handle(String(message.body))

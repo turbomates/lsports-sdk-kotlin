@@ -2,8 +2,8 @@ package com.turbomates.kotlin.lsports.sdk.client
 
 import com.rabbitmq.client.ConnectionFactory
 
-class LSportClient(
-    private val listener: Listener,
+class LSportListener<Message>(
+    private val handler: Handler<Message>,
     configuration: LSportClientConfig.() -> Unit
 ) {
     private val config = LSportClientConfig().apply(configuration)
@@ -11,16 +11,15 @@ class LSportClient(
 
     fun listenLive(queueName: String) {
         connectionFactory.host = config.liveHost
-        Consumer(listener, connectionFactory.newConnection())
+        Consumer(handler, connectionFactory.newConnection())
             .consume(queueName)
     }
 
     fun listenPreLive(queueName: String) {
         connectionFactory.host = config.preLiveHost
-        Consumer(listener, connectionFactory.newConnection())
+        Consumer(handler, connectionFactory.newConnection())
             .consume(queueName)
     }
-
 }
 
 private fun configureRabbitMq(config: LSportClientConfig): ConnectionFactory {

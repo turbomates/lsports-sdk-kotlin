@@ -1,21 +1,20 @@
-package com.turbomates.kotlin.lsports.sdk.client
+package com.turbomates.kotlin.lsports.sdk.listener
 
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
-import java.io.File
 import org.slf4j.LoggerFactory
 
 class Consumer<Message>(
     private val handler: Handler<Message>,
     private val connection: Connection
 ) {
-    fun consume(queueName: String) {
+    fun consume(packageId: PackageId) {
         val channel = connection.createChannel()
         channel.basicConsume(
-            queueName,
+            packageId.underscore(),
             false,
             DeliverCallbackListener(channel, handler),
             CancelCallbackListener()

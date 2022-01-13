@@ -1,23 +1,9 @@
-package com.turbomates.kotlin.lsports.sdk.model
+package com.turbomates.kotlin.lsports.sdk.model.message
 
-import java.time.LocalDateTime
-import java.util.UUID
+import com.turbomates.kotlin.lsports.sdk.model.header.Header
 
-data class Message(
-    val header: Header,
-    val body: Body
-) {
-    data class Header(
-        val id: UUID,
-        val type: Type,
-        val sequence: Int,
-        val timestamp: LocalDateTime
-    )
-
-    data class Body(
-        val events: List<Any>,
-        val keepAlive: Any
-    )
+interface Message {
+    val header: Header
 
     enum class Type(val value: Int) {
         FULL_EVENT(0),

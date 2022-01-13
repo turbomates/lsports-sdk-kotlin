@@ -1,10 +1,10 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-class Participant(
-    val id: Int,
+data class Participant(
+    val id: Long,
     val name: String,
-    val rotationId: Int?,
-    val position: String?,
-    val isActive: Boolean?,
-    val extraData: ExtraData?
+    val rotationId: Long? = null,
+    val position: Int? = null,
+    val isActive: Boolean? = null,
+    val participantExtraData: ExtraData? = null
 )

@@ -1,3 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-class League(val id: Int, val name: String)
+data class League(
+    val id: Long,
+    val name: String
+)

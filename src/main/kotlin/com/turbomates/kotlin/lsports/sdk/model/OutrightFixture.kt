@@ -3,14 +3,14 @@ package com.turbomates.kotlin.lsports.sdk.model
 import java.time.LocalDateTime
 
 data class OutrightFixture(
-    val id: Int,
+    val id: Long,
     val sport: Sport,
     val location: Location,
     val lastUpdateDateTime: LocalDateTime,
     val startDateTime: LocalDateTime,
     val status: Fixture.Status,
     val participants: List<Participant>,
-    val externalProviderId: Int?,
+    val externalProviderId: Long?,
     val extraData: ExtraData?
 ) {
     enum class Status(val value: Int) {

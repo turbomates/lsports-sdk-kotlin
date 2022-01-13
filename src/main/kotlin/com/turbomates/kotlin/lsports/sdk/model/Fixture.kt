@@ -10,8 +10,8 @@ data class Fixture(
     val startDateTime: LocalDateTime,
     val status: Status,
     val participants: List<Participant>,
-    val externalProviderId: Int?,
-    val extraData: ExtraData?
+    val fixtureExtraData: ExtraData,
+    val externalProviderId: Long? = null
 ) {
     enum class Status(val value: Int) {
         NOT_STARTED(1),

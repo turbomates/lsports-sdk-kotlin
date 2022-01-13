@@ -7,8 +7,8 @@ import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
 import org.slf4j.LoggerFactory
 
-class Consumer<Message>(
-    private val handler: Handler<Message>,
+class Consumer(
+    private val handler: Handler,
     private val connection: Connection
 ) {
     fun consume(packageId: PackageId) {
@@ -22,16 +22,16 @@ class Consumer<Message>(
     }
 }
 
-private class DeliverCallbackListener<Message>(
+private class DeliverCallbackListener(
     private val channel: Channel,
-    private val handler: Handler<Message>,
+    private val handler: Handler,
 ): DeliverCallback {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Suppress("UNCHECKED_CAST")
     override fun handle(consumerTag: String?, message: Delivery) {
         try {
-            handler.handle(String(message.body) as Message)
+            handler.handle(String(message.body))
             logger.info("Event was accepted $consumerTag")
             channel.basicAck(message.envelope.deliveryTag, false)
         } catch (logging: Throwable) {

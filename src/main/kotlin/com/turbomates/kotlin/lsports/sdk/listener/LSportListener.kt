@@ -8,13 +8,13 @@ class LSportListener(
     private val config = LSportClientConfig().apply(configuration)
     private val connectionFactory = configureRabbitMq(config)
 
-    fun <Message>listenLive(handler: Handler<Message>, packageId: PackageId) {
+    fun listenLive(handler: Handler, packageId: PackageId) {
         connectionFactory.host = config.liveHost
         Consumer(handler, connectionFactory.newConnection())
             .consume(packageId)
     }
 
-    fun <Message>listenPreLive(handler: Handler<Message>, packageId: PackageId) {
+    fun listenPreLive(handler: Handler, packageId: PackageId) {
         connectionFactory.host = config.preLiveHost
         Consumer(handler, connectionFactory.newConnection())
             .consume(packageId)

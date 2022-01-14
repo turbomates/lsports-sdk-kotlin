@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm").version(deps.versions.kotlin)
     alias(deps.plugins.detekt)
+    alias(deps.plugins.kotlin.serialization)
 }
 
 group = "com.turbomates.kotlin.lsports-sdk"
@@ -15,6 +16,11 @@ repositories {
 dependencies {
     api(deps.rabbitmq.amqp.client)
     api(deps.log4j.slf4j)
+    api(deps.ktor.client.auth.jvm)
+    api(deps.ktor.client.cio)
+    api(deps.ktor.serialization)
+    api(deps.ktor.client.serialization)
+    api(deps.kotlin.serialization)
 }
 
 tasks.withType<KotlinCompile> {

@@ -1,4 +1,4 @@
-package com.turbomates.kotlin.lsports.sdk.model
+package com.turbomates.kotlin.lsports.sdk.client.model
 
 data class Competition(
     val id: Int,

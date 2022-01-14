@@ -1,4 +1,4 @@
-package com.turbomates.kotlin.lsports.sdk.model
+package com.turbomates.kotlin.lsports.sdk.client.model
 
 class Participant(
     val id: Int,

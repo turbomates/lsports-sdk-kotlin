@@ -1,4 +1,4 @@
-package com.turbomates.kotlin.lsports.sdk.model
+package com.turbomates.kotlin.lsports.sdk.client.model
 
 import java.time.LocalDateTime
 import java.util.UUID

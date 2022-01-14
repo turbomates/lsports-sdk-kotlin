@@ -1,6 +1,6 @@
-package com.turbomates.kotlin.lsports.sdk.listener
+package com.turbomates.kotlin.lsports.sdk.client
 
-class LSportClientConfig {
+class LSportConfig {
     lateinit var username: String
     lateinit var password: String
 

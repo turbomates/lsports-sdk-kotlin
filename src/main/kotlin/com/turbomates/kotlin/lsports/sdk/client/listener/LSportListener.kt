@@ -1,11 +1,12 @@
-package com.turbomates.kotlin.lsports.sdk.listener
+package com.turbomates.kotlin.lsports.sdk.client.listener
 
 import com.rabbitmq.client.ConnectionFactory
+import com.turbomates.kotlin.lsports.sdk.client.LSportConfig
+import com.turbomates.kotlin.lsports.sdk.client.infrastructure.PackageId
 
 class LSportListener(
-    configuration: LSportClientConfig.() -> Unit
+    private val config: LSportConfig
 ) {
-    private val config = LSportClientConfig().apply(configuration)
     private val connectionFactory = configureRabbitMq(config)
 
     fun listenLive(handler: Handler, packageId: PackageId) {
@@ -21,7 +22,7 @@ class LSportListener(
     }
 }
 
-private fun configureRabbitMq(config: LSportClientConfig): ConnectionFactory {
+private fun configureRabbitMq(config: LSportConfig): ConnectionFactory {
     return ConnectionFactory().apply {
         port = config.port
         username = config.username

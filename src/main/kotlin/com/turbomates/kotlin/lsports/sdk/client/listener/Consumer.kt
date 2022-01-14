@@ -1,10 +1,12 @@
-package com.turbomates.kotlin.lsports.sdk.listener
+package com.turbomates.kotlin.lsports.sdk.client.listener
 
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
+import com.turbomates.kotlin.lsports.sdk.client.infrastructure.PackageId
+import com.turbomates.kotlin.lsports.sdk.client.infrastructure.underscore
 import org.slf4j.LoggerFactory
 
 class Consumer(

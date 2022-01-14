@@ -1,7 +1,7 @@
-package com.turbomates.kotlin.lsports.sdk.client
+package com.turbomates.kotlin.lsports.sdk
 
-import com.turbomates.kotlin.lsports.sdk.client.api.LSportAPI
-import com.turbomates.kotlin.lsports.sdk.client.listener.LSportListener
+import com.turbomates.kotlin.lsports.sdk.api.LSportAPI
+import com.turbomates.kotlin.lsports.sdk.listener.LSportListener
 
 class LSportClient (
     configuration: LSportConfig.() -> Unit

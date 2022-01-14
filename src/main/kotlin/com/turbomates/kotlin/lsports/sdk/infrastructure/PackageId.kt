@@ -1,4 +1,4 @@
-package com.turbomates.kotlin.lsports.sdk.client.infrastructure
+package com.turbomates.kotlin.lsports.sdk.infrastructure
 
 typealias PackageId = String
 

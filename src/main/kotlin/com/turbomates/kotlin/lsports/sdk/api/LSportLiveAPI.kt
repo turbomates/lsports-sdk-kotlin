@@ -1,6 +1,6 @@
-package com.turbomates.kotlin.lsports.sdk.client.api
+package com.turbomates.kotlin.lsports.sdk.api
 
-import com.turbomates.kotlin.lsports.sdk.client.LSportConfig
+import com.turbomates.kotlin.lsports.sdk.LSportConfig
 
 class LSportLiveAPI(private val config: LSportConfig) {
 

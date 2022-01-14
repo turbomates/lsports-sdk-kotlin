@@ -1,8 +1,8 @@
-package com.turbomates.kotlin.lsports.sdk.client.listener
+package com.turbomates.kotlin.lsports.sdk.listener
 
 import com.rabbitmq.client.ConnectionFactory
-import com.turbomates.kotlin.lsports.sdk.client.LSportConfig
-import com.turbomates.kotlin.lsports.sdk.client.infrastructure.PackageId
+import com.turbomates.kotlin.lsports.sdk.LSportConfig
+import com.turbomates.kotlin.lsports.sdk.infrastructure.PackageId
 
 class LSportListener(
     private val config: LSportConfig

@@ -1,4 +1,4 @@
-package com.turbomates.kotlin.lsports.sdk.client.infrastructure
+package com.turbomates.kotlin.lsports.sdk.infrastructure
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO

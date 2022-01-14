@@ -1,4 +1,4 @@
-package com.turbomates.kotlin.lsports.sdk.client.model
+package com.turbomates.kotlin.lsports.sdk.model
 
 typealias ExtraData = List<Data>
 

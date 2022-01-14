@@ -1,12 +1,12 @@
-package com.turbomates.kotlin.lsports.sdk.client.api
+package com.turbomates.kotlin.lsports.sdk.api
 
-import com.turbomates.kotlin.lsports.sdk.client.LSportConfig
-import com.turbomates.kotlin.lsports.sdk.client.infrastructure.client
-import com.turbomates.kotlin.lsports.sdk.client.model.Bookmaker
-import com.turbomates.kotlin.lsports.sdk.client.model.League
-import com.turbomates.kotlin.lsports.sdk.client.model.Location
-import com.turbomates.kotlin.lsports.sdk.client.model.Market
-import com.turbomates.kotlin.lsports.sdk.client.model.Sport
+import com.turbomates.kotlin.lsports.sdk.LSportConfig
+import com.turbomates.kotlin.lsports.sdk.infrastructure.client
+import com.turbomates.kotlin.lsports.sdk.model.Bookmaker
+import com.turbomates.kotlin.lsports.sdk.model.League
+import com.turbomates.kotlin.lsports.sdk.model.Location
+import com.turbomates.kotlin.lsports.sdk.model.Market
+import com.turbomates.kotlin.lsports.sdk.model.Sport
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import kotlinx.serialization.SerialName

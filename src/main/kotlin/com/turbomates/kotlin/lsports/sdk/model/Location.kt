@@ -1,10 +1,10 @@
-package com.turbomates.kotlin.lsports.sdk.client.model
+package com.turbomates.kotlin.lsports.sdk.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Market(
+class Location(
     @SerialName("Id")
     val id: Int,
     @SerialName("Name")

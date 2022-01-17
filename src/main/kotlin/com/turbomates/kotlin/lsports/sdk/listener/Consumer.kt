@@ -5,18 +5,16 @@ import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
-import com.turbomates.kotlin.lsports.sdk.infrastructure.PackageId
-import com.turbomates.kotlin.lsports.sdk.infrastructure.underscore
 import org.slf4j.LoggerFactory
 
 class Consumer(
     private val handler: Handler,
     private val connection: Connection
 ) {
-    fun consume(packageId: PackageId) {
+    fun consume(packageId: String) {
         val channel = connection.createChannel()
         channel.basicConsume(
-            packageId.underscore(),
+            "_${packageId}_",
             false,
             DeliverCallbackListener(channel, handler),
             CancelCallbackListener()

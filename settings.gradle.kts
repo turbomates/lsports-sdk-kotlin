@@ -16,7 +16,6 @@ dependencyResolutionManagement {
             alias("ktor_client_auth_jvm").to("io.ktor", "ktor-client-auth-jvm").versionRef("ktor")
             alias("ktor_serialization").to("io.ktor", "ktor-serialization").versionRef("ktor")
             alias("ktor_client_cio").to("io.ktor", "ktor-client-cio").versionRef("ktor")
-            alias("kotlin_serialization").to("org.jetbrains.kotlin", "kotlin-serialization").versionRef("kotlin")
 
             alias("detekt").toPluginId("io.gitlab.arturbosch.detekt").versionRef("detekt")
             alias("kotlin_serialization").toPluginId("org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")

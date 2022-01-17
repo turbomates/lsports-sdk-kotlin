@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk
 
-class LSportConfig {
+class LSportsConfig {
     lateinit var username: String
     lateinit var password: String
 
@@ -11,4 +11,6 @@ class LSportConfig {
     val virtualHost: String = "Customers"
     val liveHost: String = "inplay-rmq.lsports.eu"
     val preLiveHost: String = "prematch-rmq.lsports.eu"
+    val preMatchUrl: String = "https://prematch.lsports.eu/OddService"
+    val inPlayUrl: String = "https://inplay.lsports.eu/api"
 }

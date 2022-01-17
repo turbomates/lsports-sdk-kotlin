@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-interface League {
+interface Market {
     val id: Long
     val name: String
 }

@@ -2,17 +2,17 @@ package com.turbomates.kotlin.lsports.sdk.model
 
 import java.time.LocalDateTime
 
-data class Fixture(
-    val sport: Sport,
-    val location: Location,
-    val league: League,
-    val lastUpdateDateTime: LocalDateTime,
-    val startDateTime: LocalDateTime,
-    val status: Status,
-    val participants: List<Participant>,
-    val fixtureExtraData: ExtraData,
-    val externalProviderId: Long? = null
-) {
+interface Fixture {
+    val sport: Sport
+    val location: Location
+    val league: League
+    val lastUpdate: LocalDateTime
+    val startDate: LocalDateTime
+    val status: Status
+    val participants: List<Participant>
+    val fixtureExtraData: ExtraData?
+    val externalProviderId: Long?
+
     enum class Status(val value: Int) {
         NOT_STARTED(1),
         IN_PROGRESS(2),

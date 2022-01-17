@@ -1,6 +1,5 @@
 package com.turbomates.kotlin.lsports.sdk.api
 
-import com.turbomates.kotlin.lsports.sdk.LSportsClient
 import com.turbomates.kotlin.lsports.sdk.LSportsConfig
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.CancelOrder
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Order
@@ -16,6 +15,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 
 class InPlayAPI(
     private val config: LSportsConfig
@@ -68,7 +68,7 @@ class InPlayAPI(
     }
 
     suspend fun snapshot(request: Snapshot): Any {
-        return get("/Snapshot/GetSnapshotJson") {
+        return get<JsonElement>("/Snapshot/GetSnapshotJson") {
             parameter("packageid", request.packageId)
             parameter("fixtureIds", request.fixtureIds.toString())
         }

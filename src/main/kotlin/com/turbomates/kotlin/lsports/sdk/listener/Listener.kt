@@ -1,17 +1,12 @@
 package com.turbomates.kotlin.lsports.sdk.listener
 
 import com.rabbitmq.client.ConnectionFactory
-import com.turbomates.kotlin.lsports.sdk.LSportsConfig
 
-abstract class Listener(private val config: LSportsConfig) {
-    protected val connectionFactory: ConnectionFactory
-        get() = ConnectionFactory().apply {
-            port = config.port
-            username = config.username
-            password = config.password
-            virtualHost = config.virtualHost
-            requestedHeartbeat = config.requestHeartbeat
-            networkRecoveryInterval = config.networkRecoveryInterval
-            isAutomaticRecoveryEnabled = config.isAutomaticRecoveryEnabled
-        }
+class Listener(
+    private val connectionFactory: ConnectionFactory,
+) {
+    fun listen(handler: Handler, packageId: String) {
+        Consumer(handler, connectionFactory.newConnection())
+            .consume(packageId)
+    }
 }

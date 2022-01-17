@@ -1,5 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.api
 
+import com.turbomates.kotlin.lsports.sdk.LSportsClient
 import com.turbomates.kotlin.lsports.sdk.LSportsConfig
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.CancelOrder
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Order
@@ -39,7 +40,7 @@ class InPlayAPI(
     }
 
     suspend fun order(request: Order): Any {
-        return get<String>("/schedule/OrderFixtures") {
+        return get("/schedule/OrderFixtures") {
             parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
@@ -48,7 +49,7 @@ class InPlayAPI(
     }
 
     suspend fun cancelOrder(request: CancelOrder): Any {
-        return get<String>("/schedule/CancelFixtureOrders") {
+        return get("/schedule/CancelFixtureOrders") {
             parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
@@ -67,7 +68,7 @@ class InPlayAPI(
     }
 
     suspend fun snapshot(request: Snapshot): Any {
-        return get<String>("/Snapshot/GetSnapshotJson") {
+        return get("/Snapshot/GetSnapshotJson") {
             parameter("packageid", request.packageId)
             parameter("fixtureIds", request.fixtureIds.toString())
         }

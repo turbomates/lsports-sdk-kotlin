@@ -1,5 +1,5 @@
 package com.turbomates.kotlin.lsports.sdk.api.prematch.request
 
-data class BookmakersRequest(
+data class Sports(
     val guid: String
 )

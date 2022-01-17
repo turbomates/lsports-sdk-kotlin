@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.api.prematch.request
 
-data class FixturesRequest(
+class Scores(
     val guid: String,
     val timestamp: Long? = null,
     val fromDate: Long? = null,

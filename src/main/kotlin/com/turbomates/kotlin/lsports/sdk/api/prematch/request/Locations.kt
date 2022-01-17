@@ -1,5 +1,5 @@
 package com.turbomates.kotlin.lsports.sdk.api.prematch.request
 
-data class SportsRequest(
+data class Locations(
     val guid: String
 )

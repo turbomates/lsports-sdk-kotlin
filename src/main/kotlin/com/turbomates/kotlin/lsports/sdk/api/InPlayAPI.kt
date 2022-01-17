@@ -1,11 +1,11 @@
-package com.turbomates.kotlin.lsports.sdk.api.inplay
+package com.turbomates.kotlin.lsports.sdk.api
 
 import com.turbomates.kotlin.lsports.sdk.LSportsConfig
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.CancelOrderRequest
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.OrderRequest
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.ScheduleRequest
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.SnapshotRequest
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.ViewOrderedRequest
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.CancelOrder
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Order
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Schedule
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Snapshot
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.ViewOrdered
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
@@ -30,7 +30,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun schedule(request: ScheduleRequest): Any {
+    suspend fun schedule(request: Schedule): Any {
         return get("/schedule/GetInPlaySchedule") {
             parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
@@ -38,7 +38,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun order(request: OrderRequest): Any {
+    suspend fun order(request: Order): Any {
         return get<String>("/schedule/OrderFixtures") {
             parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
@@ -47,7 +47,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun cancelOrder(request: CancelOrderRequest): Any {
+    suspend fun cancelOrder(request: CancelOrder): Any {
         return get<String>("/schedule/CancelFixtureOrders") {
             parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
@@ -56,7 +56,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun viewOrdered(request: ViewOrderedRequest): Any {
+    suspend fun viewOrdered(request: ViewOrdered): Any {
         return get("/schedule/GetOrderedFixtures") {
             parameter("packageid", request.packageId)
             parameter("fixtureIds", request.fixtureIds.toString())
@@ -66,7 +66,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun snapshot(request: SnapshotRequest): Any {
+    suspend fun snapshot(request: Snapshot): Any {
         return get<String>("/Snapshot/GetSnapshotJson") {
             parameter("packageid", request.packageId)
             parameter("fixtureIds", request.fixtureIds.toString())

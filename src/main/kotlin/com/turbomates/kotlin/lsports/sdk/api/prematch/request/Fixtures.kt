@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.api.prematch.request
 
-data class FixtureMarketsRequest(
+data class Fixtures(
     val guid: String,
     val timestamp: Long? = null,
     val fromDate: Long? = null,
@@ -9,7 +9,5 @@ data class FixtureMarketsRequest(
     val locationIds: List<Int>? = null,
     val leagueIds: List<Int>? = null,
     val fixtureIds: List<Int>? = null,
-    val statuses: List<Int>? = null,
-    val bookmakerIds: List<Int>? = null,
-    val marketIds: List<Int>? = null
+    val statuses: List<Int>? = null
 )

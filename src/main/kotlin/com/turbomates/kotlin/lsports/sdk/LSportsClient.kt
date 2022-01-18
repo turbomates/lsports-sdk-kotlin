@@ -2,31 +2,22 @@ package com.turbomates.kotlin.lsports.sdk
 
 import com.turbomates.kotlin.lsports.sdk.api.InPlayAPI
 import com.turbomates.kotlin.lsports.sdk.api.PreMatchAPI
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Snapshot
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightFixtures
-import com.turbomates.kotlin.lsports.sdk.listener.Handler
+import com.turbomates.kotlin.lsports.sdk.listener.InPlayListener
 import com.turbomates.kotlin.lsports.sdk.listener.Listener
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
+import com.turbomates.kotlin.lsports.sdk.listener.PreMatchListener
 
 class LSportsClient (
     configuration: LSportsConfig.() -> Unit
 ) {
     private val config = LSportsConfig().apply(configuration)
-    private val hostConfig = LSportsConfig.HostConfig(config)
 
     val inPlay = InPlay(
         api = InPlayAPI(config),
-        listener = Listener(hostConfig.inPlayHost)
+        listener = InPlayListener(config)
     )
     val preMatch = PreMatch(
         api = PreMatchAPI(config),
-        listener = Listener(hostConfig.preMatchHost)
+        listener = PreMatchListener(config)
     )
 
     class InPlay(

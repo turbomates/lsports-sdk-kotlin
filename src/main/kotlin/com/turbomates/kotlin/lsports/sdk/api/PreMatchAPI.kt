@@ -21,7 +21,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 
 class PreMatchAPI (
     private val config: LSportsConfig
@@ -84,7 +83,7 @@ class PreMatchAPI (
     }
 
     suspend fun outrightFixtures(request: OutrightFixtures): Any {
-       return get<JsonElement>("/GetOutrightFixtures") {
+       return get("/GetOutrightFixtures") {
             parameter("guid", request.guid)
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)

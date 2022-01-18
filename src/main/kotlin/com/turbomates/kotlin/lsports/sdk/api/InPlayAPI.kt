@@ -15,7 +15,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 
 class InPlayAPI(
     private val config: LSportsConfig
@@ -68,7 +67,7 @@ class InPlayAPI(
     }
 
     suspend fun snapshot(request: Snapshot): Any {
-        return get<JsonElement>("/Snapshot/GetSnapshotJson") {
+        return get("/Snapshot/GetSnapshotJson") {
             parameter("packageid", request.packageId)
             parameter("fixtureIds", request.fixtureIds.toString())
         }

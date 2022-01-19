@@ -4,8 +4,7 @@ import com.rabbitmq.client.ConnectionFactory
 import com.turbomates.kotlin.lsports.sdk.LSportsConfig
 
 abstract class Listener(private val config: LSportsConfig) {
-    protected val connectionFactory: ConnectionFactory
-        get() = ConnectionFactory().apply {
+    protected val connectionFactory = ConnectionFactory().apply {
             port = config.port
             username = config.username
             password = config.password

@@ -5,7 +5,7 @@ import com.turbomates.kotlin.lsports.sdk.model.Livescore
 import com.turbomates.kotlin.lsports.sdk.model.Message
 import com.turbomates.kotlin.lsports.sdk.model.Header
 import com.turbomates.kotlin.lsports.sdk.model.Response
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 data class LivescoreUpdateResponse(
     override val header: HeaderImpl,

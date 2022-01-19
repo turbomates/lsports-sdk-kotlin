@@ -14,7 +14,7 @@ import com.turbomates.kotlin.lsports.sdk.model.Participant
 import com.turbomates.kotlin.lsports.sdk.model.Provider
 import com.turbomates.kotlin.lsports.sdk.model.Response
 import com.turbomates.kotlin.lsports.sdk.model.Sport
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 data class FullEventResponse(
     override val header: HeaderImpl,

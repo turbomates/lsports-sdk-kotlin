@@ -6,7 +6,7 @@ import com.turbomates.kotlin.lsports.sdk.model.Header
 import com.turbomates.kotlin.lsports.sdk.model.OrderFixture
 import com.turbomates.kotlin.lsports.sdk.model.OrderFixtureError
 import com.turbomates.kotlin.lsports.sdk.model.Response
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 import java.util.UUID
 
 data class OrderFixturesResponse(

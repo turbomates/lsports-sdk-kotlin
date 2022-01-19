@@ -10,7 +10,7 @@ import com.turbomates.kotlin.lsports.sdk.model.Message
 import com.turbomates.kotlin.lsports.sdk.model.Participant
 import com.turbomates.kotlin.lsports.sdk.model.Response
 import com.turbomates.kotlin.lsports.sdk.model.Sport
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 data class FixtureUpdateResponse(
     override val header: HeaderImpl,

@@ -1,23 +1,7 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-import java.time.LocalDateTime
-import java.util.UUID
-
-data class Message(
-    val header: Header,
-    val body: Body
-) {
-    data class Header(
-        val id: UUID,
-        val type: Type,
-        val sequence: Int,
-        val timestamp: LocalDateTime
-    )
-
-    data class Body(
-        val events: List<Any>,
-        val keepAlive: Any
-    )
+interface Message {
+    val header: Header
 
     enum class Type(val value: Int) {
         FULL_EVENT(0),
@@ -29,11 +13,14 @@ data class Message(
         LOCATIONS(6),
         MARKETS(7),
         BOOKMAKERS(8),
+        SCHEDULE(9),
+        ORDER_FIXTURES(11),
+        CANCEL_FIXTURE_ORDERS(12),
         KEEP_ALIVE(31),
         HEARTBEAT(32),
         SETTLEMENTS(35),
         SNAPSHOT(36),
-        OUTRIGHT_FIXTURE(37),
-        OUTRIGHT_LEAGUE(38)
+        OUTRIGHT_FIXTURES(37),
+        OUTRIGHT_LEAGUES(38)
     }
 }

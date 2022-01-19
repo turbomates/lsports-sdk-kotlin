@@ -1,12 +1,12 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-data class Competition(
-    val id: Int,
-    val name: String,
-    val type: Type,
-    val events: List<Event>,
+interface Competition {
+    val id: Long
+    val name: String
+    val type: Type
     val competitions: List<Competition>?
-) {
+    val events: List<Event>?
+
     enum class Type(val value: Int) {
         TRACK_NAME(1),
         RACE_NAME(2),

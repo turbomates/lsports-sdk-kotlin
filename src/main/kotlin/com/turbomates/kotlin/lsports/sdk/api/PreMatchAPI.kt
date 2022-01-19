@@ -1,17 +1,13 @@
 package com.turbomates.kotlin.lsports.sdk.api
 
 import com.turbomates.kotlin.lsports.sdk.LSportsConfig
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Bookmakers
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Events
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.FixtureMarkets
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Fixtures
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Leagues
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Locations
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Markets
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightFixtures
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightLeagues
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Scores
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Sports
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
@@ -27,50 +23,30 @@ class PreMatchAPI (
 ) {
     private suspend inline fun <reified T> get(
         path: String,
-        parameters: HttpRequestBuilder.() -> Unit
+        parameters: HttpRequestBuilder.() -> Unit = {}
     ): T {
         return client.get(config.preMatchUrl + path) {
             parameter("username", config.username)
             parameter("password", config.password)
+            parameter("guid", config.guid)
             parameters()
         }
     }
 
-    suspend fun sports(request: Sports): Any {
-        return get("/GetSports") {
-            parameter("guid", request.guid)
-        }
-    }
-
-    suspend fun locations(request: Locations): Any {
-        return get("/GetLocations") {
-            parameter("guid", request.guid)
-        }
-    }
+    suspend fun sports(): Any = get("/GetSports")
+    suspend fun markets(): Any = get("/GetMarkets")
+    suspend fun locations(): Any = get("/GetLocations")
+    suspend fun bookmakers(): Any = get("/GetBookmakers")
 
     suspend fun leagues(request: Leagues): Any {
         return get("/GetLeagues") {
-            parameter("guid", request.guid)
             parameter("sports", request.sportIds.toString())
             parameter("locations", request.locationIds.toString())
         }
     }
 
-    suspend fun bookmakers(request: Bookmakers): Any {
-        return get("/GetBookmakers") {
-            parameter("guid", request.guid)
-        }
-    }
-
-    suspend fun markets(request: Markets): Any {
-        return get("/GetMarkets") {
-            parameter("guid", request.guid)
-        }
-    }
-
     suspend fun fixtures(request: Fixtures): Any {
         return get("/GetFixtures") {
-            parameter("guid", request.guid)
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
             parameter("toDate", request.toDate)
@@ -84,7 +60,6 @@ class PreMatchAPI (
 
     suspend fun outrightFixtures(request: OutrightFixtures): Any {
        return get("/GetOutrightFixtures") {
-            parameter("guid", request.guid)
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
             parameter("toDate", request.toDate)
@@ -97,7 +72,6 @@ class PreMatchAPI (
 
     suspend fun outrightLeagues(request: OutrightLeagues): Any {
         return get("/GetOutrightLeagues") {
-            parameter("guid", request.guid)
             parameter("timestamp", request.timestamp)
             parameter("sports", request.sportIds.toString())
             parameter("locations", request.locationIds.toString())
@@ -108,7 +82,6 @@ class PreMatchAPI (
 
     suspend fun fixtureMarkets(request: FixtureMarkets): Any {
         return get("/GetFixtureMarkets") {
-            parameter("guid", request.guid)
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
             parameter("toDate", request.toDate)
@@ -124,7 +97,6 @@ class PreMatchAPI (
 
     suspend fun scores(request: Scores): Any {
         return get("/GetScores") {
-            parameter("guid", request.guid)
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
             parameter("toDate", request.toDate)
@@ -138,7 +110,6 @@ class PreMatchAPI (
 
     suspend fun events(request: Events): Any {
         return get("/GetEvents") {
-            parameter("guid", request.guid)
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
             parameter("toDate", request.toDate)
@@ -152,17 +123,8 @@ class PreMatchAPI (
         }
     }
 
-    suspend fun enablePackage(guid: String) {
-        return get("/EnablePackage") {
-            parameter("guid", guid)
-        }
-    }
-
-    suspend fun disablePackage(guid: String) {
-        return get("/DisablePackage") {
-            parameter("guid", guid)
-        }
-    }
+    suspend fun enablePackage(): Unit = get("/EnablePackage")
+    suspend fun disablePackage(): Unit = get("/DisablePackage")
 
     companion object {
         private fun List<Any>?.toString() = this?.joinToString(",")

@@ -1,7 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.api.prematch.request
 
 data class OutrightLeagues(
-    val guid: String,
     val timestamp: Long? = null,
     val sportIds: List<Int>? = null,
     val locationIds: List<Int>? = null,

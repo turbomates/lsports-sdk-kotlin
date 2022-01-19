@@ -1,7 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.api.prematch.request
 
 class Events(
-    val guid: String,
     val timestamp: Long? = null,
     val fromDate: Long? = null,
     val toDate: Long? = null,

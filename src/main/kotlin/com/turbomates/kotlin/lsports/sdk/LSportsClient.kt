@@ -3,7 +3,6 @@ package com.turbomates.kotlin.lsports.sdk
 import com.turbomates.kotlin.lsports.sdk.api.InPlayAPI
 import com.turbomates.kotlin.lsports.sdk.api.PreMatchAPI
 import com.turbomates.kotlin.lsports.sdk.listener.InPlayListener
-import com.turbomates.kotlin.lsports.sdk.listener.Listener
 import com.turbomates.kotlin.lsports.sdk.listener.PreMatchListener
 
 class LSportsClient (
@@ -22,11 +21,11 @@ class LSportsClient (
 
     class InPlay(
         val api: InPlayAPI,
-        val listener: Listener
+        val listener: InPlayListener
     )
 
     class PreMatch(
         val api: PreMatchAPI,
-        val listener: Listener
+        val listener: PreMatchListener
     )
 }

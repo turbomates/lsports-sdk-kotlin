@@ -21,18 +21,18 @@ class InPlayAPI(
 ) {
     private suspend inline fun <reified T> get(
         path: String,
-        parameters: HttpRequestBuilder.() -> Unit
+        parameters: HttpRequestBuilder.() -> Unit = {}
     ): T {
         return client.get(config.inPlayUrl + path) {
             parameter("username", config.username)
             parameter("password", config.password)
+            parameter("packageid", config.inPlayPackageId)
             parameters()
         }
     }
 
     suspend fun schedule(request: Schedule): Any {
         return get("/schedule/GetInPlaySchedule") {
-            parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
             parameter("providerIds", request.providerIds.toString())
         }
@@ -40,7 +40,6 @@ class InPlayAPI(
 
     suspend fun order(request: Order): Any {
         return get("/schedule/OrderFixtures") {
-            parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
             parameter("providerIds", request.providerIds.toString())
@@ -49,7 +48,6 @@ class InPlayAPI(
 
     suspend fun cancelOrder(request: CancelOrder): Any {
         return get("/schedule/CancelFixtureOrders") {
-            parameter("packageid", request.packageId)
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
             parameter("providerIds", request.providerIds.toString())
@@ -58,7 +56,6 @@ class InPlayAPI(
 
     suspend fun viewOrdered(request: ViewOrdered): Any {
         return get("/schedule/GetOrderedFixtures") {
-            parameter("packageid", request.packageId)
             parameter("fixtureIds", request.fixtureIds.toString())
             parameter("providerIds", request.providerIds.toString())
             parameter("fromDate", request.fromDate)
@@ -68,22 +65,12 @@ class InPlayAPI(
 
     suspend fun snapshot(request: Snapshot): Any {
         return get("/Snapshot/GetSnapshotJson") {
-            parameter("packageid", request.packageId)
             parameter("fixtureIds", request.fixtureIds.toString())
         }
     }
 
-    suspend fun enablePackage(packageId: String) {
-        return get("/Package/EnablePackage") {
-            parameter("packageid", packageId)
-        }
-    }
-
-    suspend fun disablePackage(packageId: String) {
-        return get("/Package/DisablePackage") {
-            parameter("packageid", packageId)
-        }
-    }
+    suspend fun enablePackage(): Unit = get("/Package/EnablePackage")
+    suspend fun disablePackage(): Unit = get("/Package/DisablePackage")
 
     companion object {
         private fun List<Any>?.toString() = this?.joinToString(",")

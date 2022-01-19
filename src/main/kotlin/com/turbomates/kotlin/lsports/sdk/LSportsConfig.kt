@@ -3,6 +3,9 @@ package com.turbomates.kotlin.lsports.sdk
 class LSportsConfig {
     lateinit var username: String
     lateinit var password: String
+    lateinit var guid: String
+    lateinit var inPlayPackageId: String
+    lateinit var preMatchPackageId: String
 
     val port: Int = 5672
     val requestHeartbeat: Int = 580

@@ -1,9 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     kotlin("jvm").version(deps.versions.kotlin)
-    alias(deps.plugins.detekt)
     alias(deps.plugins.kotlin.serialization)
+    alias(deps.plugins.detekt)
 }
 
 group = "com.turbomates.kotlin.lsports-sdk"
@@ -20,7 +21,7 @@ dependencies {
     api(deps.ktor.client.cio)
     api(deps.ktor.serialization)
     api(deps.ktor.client.serialization)
-    api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 
     testImplementation(deps.kotlin.test)
 }
@@ -55,6 +56,9 @@ detekt {
     parallel = true
     allRules = false
     config = files("detekt.yml")
+}
+
+tasks.withType<Detekt>().configureEach {
     reports {
         xml.required.set(true)
         html.required.set(false)

@@ -11,10 +11,10 @@ class Consumer(
     private val handler: Handler,
     private val connection: Connection
 ) {
-    fun consume(packageId: PackageId) {
+    fun consume(packageId: String) {
         val channel = connection.createChannel()
         channel.basicConsume(
-            packageId.underscore(),
+            "_${packageId}_",
             false,
             DeliverCallbackListener(channel, handler),
             CancelCallbackListener()

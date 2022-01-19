@@ -38,7 +38,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun order(request: Order): Any {
+    suspend fun orderFixtures(request: Order): Any {
         return get("/schedule/OrderFixtures") {
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
@@ -46,7 +46,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun cancelOrder(request: CancelOrder): Any {
+    suspend fun cancelFixtureOrders(request: CancelOrder): Any {
         return get("/schedule/CancelFixtureOrders") {
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
@@ -54,7 +54,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun viewOrdered(request: ViewOrdered): Any {
+    suspend fun orderedFixtures(request: ViewOrdered): Any {
         return get("/schedule/GetOrderedFixtures") {
             parameter("fixtureIds", request.fixtureIds.toString())
             parameter("providerIds", request.providerIds.toString())

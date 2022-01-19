@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-interface Market {
-    val id: Long
+data class Bookmaker(
+    val id: Long,
     val name: String
-}
+)

@@ -9,11 +9,11 @@ import com.turbomates.kotlin.lsports.sdk.model.message.KeepAliveMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.LivescoreUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.MarketUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
-import java.util.UUID
-import kotlin.test.assertEquals
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.util.UUID
+import kotlin.test.assertEquals
 
 class MessageSerializerTest {
     @Test
@@ -55,7 +55,10 @@ class MessageSerializerTest {
         assertEquals(Message.Type.MARKET_UPDATE, marketUpdateMessage.header.type)
         assertEquals(UUID.fromString("4e0e2955-6340-4926-9799-064a98cb1766"), marketUpdateMessage.header.msgGuid)
         assertEquals(8061863, marketUpdateMessage.body.events.first().fixtureId)
-        assertEquals(2.15, marketUpdateMessage.body.events.first().markets.first().providers.first().bets.first().startPrice)
+        assertEquals(
+            2.15,
+            marketUpdateMessage.body.events.first().markets.first().providers.first().bets.first().startPrice
+        )
     }
 
     @Test
@@ -94,6 +97,9 @@ class MessageSerializerTest {
         assertEquals(Message.Type.SETTLEMENTS, settlementMessage.header.type)
         assertEquals(UUID.fromString("ca4da570-a87d-4e06-9d68-770b229a2df4"), settlementMessage.header.msgGuid)
         assertEquals(8066430, settlementMessage.body.events.first().fixtureId)
-        assertEquals(Bet.Settlement.LOSER, settlementMessage.body.events.first().markets.first().providers.first().bets.first().settlement)
+        assertEquals(
+            Bet.Settlement.LOSER,
+            settlementMessage.body.events.first().markets.first().providers.first().bets.first().settlement
+        )
     }
 }

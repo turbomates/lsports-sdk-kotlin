@@ -8,24 +8,18 @@ import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Leagues
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightFixtures
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightLeagues
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Scores
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.http.ContentType
-import kotlinx.serialization.json.Json
 
-class PreMatchAPI (
+class PreMatchAPI(
     private val config: LSportsConfig
 ) {
     private suspend inline fun <reified T> get(
         path: String,
         parameters: HttpRequestBuilder.() -> Unit = {}
     ): T {
-        return client.get(config.preMatchUrl + path) {
+        return API.client.get(config.preMatchUrl + path) {
             parameter("username", config.username)
             parameter("password", config.password)
             parameter("guid", config.guid)
@@ -59,7 +53,7 @@ class PreMatchAPI (
     }
 
     suspend fun outrightFixtures(request: OutrightFixtures): Any {
-       return get("/GetOutrightFixtures") {
+        return get("/GetOutrightFixtures") {
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
             parameter("toDate", request.toDate)
@@ -126,20 +120,5 @@ class PreMatchAPI (
     suspend fun enablePackage(): Unit = get("/EnablePackage")
     suspend fun disablePackage(): Unit = get("/DisablePackage")
 
-    companion object {
-        private fun List<Any>?.toString() = this?.joinToString(",")
-
-        private val client: HttpClient = HttpClient(CIO) {
-            install(JsonFeature) {
-                accept(ContentType.Application.Json)
-                accept(ContentType("application", "octet-stream"))
-                serializer = KotlinxSerializer(
-                    Json {
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    }
-                )
-            }
-        }
-    }
+    private fun List<Any>?.toString() = this?.joinToString(",")
 }

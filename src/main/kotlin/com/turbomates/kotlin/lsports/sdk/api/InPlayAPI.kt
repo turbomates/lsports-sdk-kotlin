@@ -6,15 +6,9 @@ import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Order
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Schedule
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Snapshot
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.ViewOrdered
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.http.ContentType
-import kotlinx.serialization.json.Json
 
 class InPlayAPI(
     private val config: LSportsConfig
@@ -23,7 +17,7 @@ class InPlayAPI(
         path: String,
         parameters: HttpRequestBuilder.() -> Unit = {}
     ): T {
-        return client.get(config.inPlayUrl + path) {
+        return API.client.get(config.inPlayUrl + path) {
             parameter("username", config.username)
             parameter("password", config.password)
             parameter("packageid", config.inPlayPackageId)
@@ -72,20 +66,5 @@ class InPlayAPI(
     suspend fun enablePackage(): Unit = get("/Package/EnablePackage")
     suspend fun disablePackage(): Unit = get("/Package/DisablePackage")
 
-    companion object {
-        private fun List<Any>?.toString() = this?.joinToString(",")
-
-        private val client: HttpClient = HttpClient(CIO) {
-            install(JsonFeature) {
-                accept(ContentType.Application.Json)
-                accept(ContentType("application", "octet-stream"))
-                serializer = KotlinxSerializer(
-                    Json {
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    }
-                )
-            }
-        }
-    }
+    private fun List<Any>?.toString() = this?.joinToString(",")
 }

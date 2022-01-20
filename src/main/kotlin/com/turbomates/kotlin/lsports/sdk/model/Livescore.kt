@@ -8,7 +8,7 @@ data class Livescore(
     @SerialName("Scoreboard")
     val scoreboard: Scoreboard,
     @SerialName("Periods")
-    val periods: List<Period>,
+    val periods: List<Period>? = null,
     @SerialName("Statistics")
     val statistics: List<Statistic>? = null,
     @SerialName("LivescoreExtraData")

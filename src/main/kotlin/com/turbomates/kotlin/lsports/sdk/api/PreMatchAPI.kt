@@ -8,6 +8,17 @@ import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Leagues
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightFixtures
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightLeagues
 import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Scores
+import com.turbomates.kotlin.lsports.sdk.model.response.BookmakersResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.FixtureUpdateResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.FullEventResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.LeaguesResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.LivescoreUpdateResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.LocationsResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.MarketUpdateResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.MarketsResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.OutrightFixturesResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.OutrightLeaguesResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.SportsResponse
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -27,19 +38,19 @@ class PreMatchAPI(
         }
     }
 
-    suspend fun sports(): Any = get("/GetSports")
-    suspend fun markets(): Any = get("/GetMarkets")
-    suspend fun locations(): Any = get("/GetLocations")
-    suspend fun bookmakers(): Any = get("/GetBookmakers")
+    suspend fun sports(): SportsResponse = get("/GetSports")
+    suspend fun markets(): MarketsResponse = get("/GetMarkets")
+    suspend fun locations(): LocationsResponse = get("/GetLocations")
+    suspend fun bookmakers(): BookmakersResponse = get("/GetBookmakers")
 
-    suspend fun leagues(request: Leagues): Any {
+    suspend fun leagues(request: Leagues): LeaguesResponse {
         return get("/GetLeagues") {
             parameter("sports", request.sportIds.toString())
             parameter("locations", request.locationIds.toString())
         }
     }
 
-    suspend fun fixtures(request: Fixtures): Any {
+    suspend fun fixtures(request: Fixtures): FixtureUpdateResponse {
         return get("/GetFixtures") {
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
@@ -52,7 +63,7 @@ class PreMatchAPI(
         }
     }
 
-    suspend fun outrightFixtures(request: OutrightFixtures): Any {
+    suspend fun outrightFixtures(request: OutrightFixtures): OutrightFixturesResponse {
         return get("/GetOutrightFixtures") {
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
@@ -64,7 +75,7 @@ class PreMatchAPI(
         }
     }
 
-    suspend fun outrightLeagues(request: OutrightLeagues): Any {
+    suspend fun outrightLeagues(request: OutrightLeagues): OutrightLeaguesResponse {
         return get("/GetOutrightLeagues") {
             parameter("timestamp", request.timestamp)
             parameter("sports", request.sportIds.toString())
@@ -74,7 +85,7 @@ class PreMatchAPI(
         }
     }
 
-    suspend fun fixtureMarkets(request: FixtureMarkets): Any {
+    suspend fun fixtureMarkets(request: FixtureMarkets): MarketUpdateResponse {
         return get("/GetFixtureMarkets") {
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
@@ -89,7 +100,7 @@ class PreMatchAPI(
         }
     }
 
-    suspend fun scores(request: Scores): Any {
+    suspend fun scores(request: Scores): LivescoreUpdateResponse {
         return get("/GetScores") {
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)
@@ -102,7 +113,7 @@ class PreMatchAPI(
         }
     }
 
-    suspend fun events(request: Events): Any {
+    suspend fun events(request: Events): FullEventResponse {
         return get("/GetEvents") {
             parameter("timestamp", request.timestamp)
             parameter("fromDate", request.fromDate)

@@ -6,6 +6,10 @@ import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Order
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Schedule
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Snapshot
 import com.turbomates.kotlin.lsports.sdk.api.inplay.request.ViewOrdered
+import com.turbomates.kotlin.lsports.sdk.model.response.CancelFixtureOrdersResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.OrderFixturesResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.ScheduleResponse
+import com.turbomates.kotlin.lsports.sdk.model.response.SnapshotResponse
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -25,14 +29,14 @@ class InPlayAPI(
         }
     }
 
-    suspend fun schedule(request: Schedule): Any {
+    suspend fun schedule(request: Schedule): ScheduleResponse {
         return get("/schedule/GetInPlaySchedule") {
             parameter("sportIds", request.sportIds.toString())
             parameter("providerIds", request.providerIds.toString())
         }
     }
 
-    suspend fun orderFixtures(request: Order): Any {
+    suspend fun orderFixtures(request: Order): OrderFixturesResponse {
         return get("/schedule/OrderFixtures") {
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
@@ -40,7 +44,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun cancelFixtureOrders(request: CancelOrder): Any {
+    suspend fun cancelFixtureOrders(request: CancelOrder): CancelFixtureOrdersResponse {
         return get("/schedule/CancelFixtureOrders") {
             parameter("sportIds", request.sportIds.toString())
             parameter("fixtureIds", request.fixtureIds.toString())
@@ -57,7 +61,7 @@ class InPlayAPI(
         }
     }
 
-    suspend fun snapshot(request: Snapshot): Any {
+    suspend fun snapshot(request: Snapshot): SnapshotResponse {
         return get("/Snapshot/GetSnapshotJson") {
             parameter("fixtureIds", request.fixtureIds.toString())
         }

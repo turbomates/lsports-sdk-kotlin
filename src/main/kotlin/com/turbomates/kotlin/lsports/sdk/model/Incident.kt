@@ -20,6 +20,8 @@ data class Incident(
 ) {
     @Serializable
     enum class Type(val value: Int) {
+        @SerialName("0")
+        UNKNOWN_0(0),
         @SerialName("1")
         CORNER(1),
         @SerialName("6")

@@ -106,6 +106,8 @@ data class MarketUpdateMessage(
         override val layPriceVolume: Double? = null,
         @SerialName("ProviderBetId")
         override val providerBetId: String? = null,
+        @SerialName("ParticipantId")
+        override val participantId: Long? = null,
         @SerialName("LastUpdate")
         @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime

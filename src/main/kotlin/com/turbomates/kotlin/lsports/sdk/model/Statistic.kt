@@ -16,6 +16,8 @@ data class Statistic(
     enum class Type(val value: Int) {
         @SerialName("1")
         CORNER(1),
+        @SerialName("2")
+        UNKNOWN_2(2),
         @SerialName("3")
         UNKNOWN_3(3),
         @SerialName("4")

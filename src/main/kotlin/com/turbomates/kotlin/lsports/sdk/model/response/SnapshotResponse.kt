@@ -161,6 +161,8 @@ data class SnapshotResponse(
         override val providerBetId: String? = null,
         @SerialName("LastUpdate")
         override val lastUpdate: LocalDateTime,
+        @SerialName("ParticipantId")
+        override val participantId: Long? = null,
         @SerialName("Settlement")
         val settlement: Bet.Settlement? = null
     ) : Bet

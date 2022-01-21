@@ -145,6 +145,8 @@ data class FullEventResponse(
         override val layPriceVolume: Double? = null,
         @SerialName("ProviderBetId")
         override val providerBetId: String? = null,
+        @SerialName("ParticipantId")
+        override val participantId: Long? = null,
         @SerialName("LastUpdate")
         override val lastUpdate: LocalDateTime,
         @SerialName("Settlement")

@@ -13,6 +13,8 @@ data class Incident(
     val seconds: Long,
     @SerialName("ParticipantPosition")
     val participantPosition: Int,
+    @SerialName("PlayerId")
+    val playerId: Int? = null,
     @SerialName("Results")
     val results: List<Result>,
     @SerialName("PlayerName")

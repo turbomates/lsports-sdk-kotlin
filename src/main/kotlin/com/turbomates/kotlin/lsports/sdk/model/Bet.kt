@@ -16,6 +16,7 @@ interface Bet {
     val priceVolume: Double?
     val layPriceVolume: Double?
     val providerBetId: String?
+    val participantId: Long?
     val lastUpdate: LocalDateTime
 
     @Serializable

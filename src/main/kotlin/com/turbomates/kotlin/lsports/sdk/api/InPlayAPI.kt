@@ -38,7 +38,6 @@ class InPlayAPI(
     }
 
     suspend fun orderFixtures(request: OrderFixturesRequest.() -> Unit = {}): OrderFixturesResponse {
-        val parameters = OrderFixturesRequest().apply(request)
         return get("/schedule/OrderFixtures") {
             parameter("sportIds", parameters.sportIds.toString())
             parameter("fixtureIds", parameters.fixtureIds.toString())

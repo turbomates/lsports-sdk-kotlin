@@ -10,6 +10,8 @@ dependencyResolutionManagement {
             version("detekt", "1.19.0")
             version("rabbitmq_amqp_client", "5.14.0")
             version("test_logger", "3.0.0")
+            version("kotlinx", "0.3.2")
+            version("nexus_staging", "0.30.0")
 
             alias("log4j_slf4j").to("org.apache.logging.log4j", "log4j-slf4j-impl").versionRef("log4j")
             alias("rabbitmq_amqp_client").to("com.rabbitmq", "amqp-client").versionRef("rabbitmq_amqp_client")
@@ -18,10 +20,12 @@ dependencyResolutionManagement {
             alias("ktor_serialization").to("io.ktor", "ktor-serialization").versionRef("ktor")
             alias("ktor_client_cio").to("io.ktor", "ktor-client-cio").versionRef("ktor")
             alias("kotlin_test").to("org.jetbrains.kotlin", "kotlin-test-junit5").versionRef("kotlin")
+            alias("kotlinx_datetime").to("org.jetbrains.kotlinx", "kotlinx-datetime").versionRef("kotlinx")
 
             alias("detekt").toPluginId("io.gitlab.arturbosch.detekt").versionRef("detekt")
             alias("kotlin_serialization").toPluginId("org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
             alias("test_logger").toPluginId("com.adarshr.test-logger").versionRef("test_logger")
+            alias("nexus_release").toPluginId("io.codearte.nexus-staging").versionRef("nexus_staging")
         }
     }
 }

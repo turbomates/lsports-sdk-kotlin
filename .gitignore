@@ -59,3 +59,4 @@ hibernate.properties
 *.http
 trunc.sh
 logback.xml
+gradle.properties

@@ -45,5 +45,4 @@ interface Message {
         @SerialName("38")
         OUTRIGHT_LEAGUES(38)
     }
-
 }

@@ -44,7 +44,7 @@ class Consumer(
         )
     }
 
-    private suspend fun consumeOne() {
+    private suspend fun asyncConsume() {
         try {
             val delivery = deliveries.receive()
             val deliveryTag = delivery.envelope.deliveryTag
@@ -68,7 +68,7 @@ class Consumer(
     suspend fun consume() = coroutineScope {
         while (isActive) {
             (1..prefetchSize).map {
-                async(coroutineContext) { consumeOne() }
+                async(coroutineContext) { asyncConsume() }
             }.awaitAll()
         }
     }

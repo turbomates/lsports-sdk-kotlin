@@ -27,7 +27,9 @@ class Consumer(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val channel = connection.createChannel()
+    private val channel = connection.createChannel().apply {
+        basicQos(prefetchSize, false)
+    }
 
     private val deliveriesFlow: MutableSharedFlow<Delivery> = MutableSharedFlow(extraBufferCapacity = prefetchSize)
 
@@ -35,8 +37,6 @@ class Consumer(
 
 
     suspend fun consume() {
-        channel.basicQos(prefetchSize, false)
-
         consumerTag = channel.basicConsume(
             queue, false,
             DeliverCallbackListener(deliveriesFlow, logger),
@@ -59,7 +59,7 @@ class Consumer(
         }
     }
 
-    private suspend fun consumeDelivery(delivery: Delivery) {
+    private fun consumeDelivery(delivery: Delivery) {
         try {
             val deliveryTag = delivery.envelope.deliveryTag
 

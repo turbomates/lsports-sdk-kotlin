@@ -24,7 +24,6 @@ dependencies {
     api(deps.ktor.client.cio)
     api(deps.ktor.serialization)
     api(deps.ktor.client.serialization)
-    api(deps.kotlinx.datetime)
 
     testImplementation(deps.kotlin.test)
 }
@@ -46,7 +45,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {
         events("PASSED", "STARTED", "FAILED", "SKIPPED")
-        // showStandardStreams = true
     }
     doFirst {
         System.getProperties().forEach { (k, v) ->

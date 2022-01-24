@@ -10,8 +10,9 @@ import com.turbomates.kotlin.lsports.sdk.model.Message
 import com.turbomates.kotlin.lsports.sdk.model.Participant
 import com.turbomates.kotlin.lsports.sdk.model.Response
 import com.turbomates.kotlin.lsports.sdk.model.Sport
+import com.turbomates.kotlin.lsports.sdk.serializer.LocalDateTimeSerializer
 import com.turbomates.kotlin.lsports.sdk.serializer.TimestampSerializer
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -48,8 +49,10 @@ data class FixtureUpdateResponse(
         @SerialName("League")
         override val league: LeagueImpl,
         @SerialName("LastUpdate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime,
         @SerialName("StartDate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val startDate: LocalDateTime,
         @SerialName("Status")
         override val status: Fixture.Status,

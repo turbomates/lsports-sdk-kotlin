@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.serializer
 
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind

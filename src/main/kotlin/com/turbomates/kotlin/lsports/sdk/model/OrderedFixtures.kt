@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-import kotlinx.datetime.LocalDate
+import java.time.LocalDate
 
 data class OrderedFixtures(
     val fixtureOrders: List<Order>

@@ -12,10 +12,11 @@ import com.turbomates.kotlin.lsports.sdk.model.Header
 import com.turbomates.kotlin.lsports.sdk.model.League
 import com.turbomates.kotlin.lsports.sdk.model.Livescore
 import com.turbomates.kotlin.lsports.sdk.model.Market
+import com.turbomates.kotlin.lsports.sdk.serializer.LocalDateTimeSerializer
 import com.turbomates.kotlin.lsports.sdk.serializer.TimestampSerializer
 import com.turbomates.kotlin.lsports.sdk.serializer.UUIDSerializer
 import java.util.UUID
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -67,8 +68,10 @@ data class FixtureUpdateMessage(
         @SerialName("League")
         override val league: LeagueImpl,
         @SerialName("LastUpdate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime,
         @SerialName("StartDate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val startDate: LocalDateTime,
         @SerialName("Status")
         override val status: Fixture.Status,

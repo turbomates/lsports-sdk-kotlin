@@ -16,9 +16,10 @@ import com.turbomates.kotlin.lsports.sdk.model.Provider
 import com.turbomates.kotlin.lsports.sdk.model.Response
 import com.turbomates.kotlin.lsports.sdk.model.Sport
 import com.turbomates.kotlin.lsports.sdk.serializer.IntBooleanSerializer
+import com.turbomates.kotlin.lsports.sdk.serializer.LocalDateTimeSerializer
 import com.turbomates.kotlin.lsports.sdk.serializer.TimestampSerializer
 import com.turbomates.kotlin.lsports.sdk.serializer.UUIDSerializer
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import java.util.UUID
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -69,8 +70,10 @@ data class SnapshotResponse(
         @SerialName("League")
         override val league: LeagueImpl,
         @SerialName("LastUpdate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime,
         @SerialName("StartDate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val startDate: LocalDateTime,
         @SerialName("Status")
         override val status: Fixture.Status,
@@ -124,6 +127,7 @@ data class SnapshotResponse(
         @SerialName("Name")
         override val name: String,
         @SerialName("LastUpdate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime,
         @SerialName("Bets")
         override val bets: List<BetImpl>,
@@ -160,6 +164,7 @@ data class SnapshotResponse(
         @SerialName("ProviderBetId")
         override val providerBetId: String? = null,
         @SerialName("LastUpdate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime,
         @SerialName("ParticipantId")
         override val participantId: Long? = null,

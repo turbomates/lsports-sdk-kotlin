@@ -5,7 +5,7 @@ import com.turbomates.kotlin.lsports.sdk.model.Message
 import com.turbomates.kotlin.lsports.sdk.model.Header
 import com.turbomates.kotlin.lsports.sdk.model.Response
 import com.turbomates.kotlin.lsports.sdk.serializer.TimestampSerializer
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

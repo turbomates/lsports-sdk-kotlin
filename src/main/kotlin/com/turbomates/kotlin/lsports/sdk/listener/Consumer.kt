@@ -7,9 +7,9 @@ import com.rabbitmq.client.Delivery
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.channels.ClosedSendChannelException
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
@@ -21,65 +21,72 @@ import java.io.Closeable
 class Consumer(
     private val handler: Handler,
     connection: Connection,
-    queue: String,
-    prefetchSize: Int
+    private val queue: String,
+    private val prefetchSize: Int
 ) : CoroutineScope by CoroutineScope(Dispatchers.IO), Closeable {
 
     private val logger = LoggerFactory.getLogger(javaClass)
-
-    private val consumerTag: String
 
     private val channel = connection.createChannel()
 
     private val deliveriesFlow: MutableSharedFlow<Delivery> = MutableSharedFlow(extraBufferCapacity = prefetchSize)
 
-    init {
+    private lateinit var consumerTag: String
+
+
+    suspend fun consume() {
         channel.basicQos(prefetchSize, false)
+
         consumerTag = channel.basicConsume(
             queue, false,
             DeliverCallbackListener(deliveriesFlow, logger),
             CancelCallbackListener(logger)
         )
-    }
 
-    suspend fun consume() {
-        deliveriesFlow.collect { delivery ->
-            try {
-                val deliveryTag = delivery.envelope.deliveryTag
-                delay((Math.random() *1000).toLong())
-                try {
-                    val message = Json.decodeFromString(MessageSerializer, String(delivery.body))
-                    handler.handle(message)
-                    channel.basicAck(deliveryTag, false)
-                    delay((Math.random() *1000).toLong())
-                } catch (logging: Throwable) {
-                    logger.error("Listener was cancelled $consumerTag. Message ${logging.message}")
-                    channel.basicNack(delivery.envelope.deliveryTag, false, true)
-                }
-            } catch (e: Exception) {
-                when (e) {
-                    is ClosedReceiveChannelException -> throw Exception("Cancel exception")
-                    else -> throw e
-                }
-            }
+        deliveriesFlow.collect {
+            async { consumeDelivery(it) }
         }
     }
 
     override fun close() {
-        logger.debug("closing Consumer")
-        channel.basicCancel(consumerTag)
+        try {
+            channel.basicCancel(consumerTag)
+        } catch (e: Exception) {
+            when (e) {
+                is UninitializedPropertyAccessException -> throw Exception("Consumer has not been initialized")
+                else -> throw e
+            }
+        }
+    }
+
+    private suspend fun consumeDelivery(delivery: Delivery) {
+        try {
+            val deliveryTag = delivery.envelope.deliveryTag
+
+            try {
+                val message = Json.decodeFromString(MessageSerializer, String(delivery.body))
+                handler.handle(message)
+                channel.basicAck(deliveryTag, false)
+            } catch (logging: Throwable) {
+                logger.error("Listener was cancelled $consumerTag. Message ${logging.message}")
+                channel.basicNack(delivery.envelope.deliveryTag, false, true)
+            }
+        } catch (e: Exception) {
+            when (e) {
+                is ClosedReceiveChannelException -> throw Exception("Cancel exception")
+                else -> throw e
+            }
+        }
     }
 }
 
 private class DeliverCallbackListener(
     val deliveriesFlow: MutableSharedFlow<Delivery>,
     private val logger: Logger
-) : DeliverCallback {
+) : CoroutineScope by CoroutineScope(Dispatchers.IO), DeliverCallback {
     override fun handle(consumerTag: String?, delivery: Delivery) {
         try {
-            runBlocking {
-                deliveriesFlow.emit(delivery)
-            }
+            runBlocking { deliveriesFlow.emit(delivery) }
         } catch (e: ClosedSendChannelException) {
             logger.debug("Can't receive a message. Consumer $consumerTag has been cancelled")
         }

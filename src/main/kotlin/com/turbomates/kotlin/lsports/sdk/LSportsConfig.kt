@@ -16,4 +16,7 @@ class LSportsConfig {
     val preMatchHost: String = "prematch-rmq.lsports.eu"
     val preMatchUrl: String = "https://prematch.lsports.eu/OddService"
     val inPlayUrl: String = "https://inplay.lsports.eu/api"
+
+    fun inPlayQueueName() = "_${inPlayPackageId}_"
+    fun preMatchQueueName() = "_${preMatchPackageId}_"
 }

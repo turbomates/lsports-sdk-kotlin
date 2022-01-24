@@ -5,7 +5,7 @@ import com.turbomates.kotlin.lsports.sdk.api.PreMatchAPI
 import com.turbomates.kotlin.lsports.sdk.listener.InPlayListener
 import com.turbomates.kotlin.lsports.sdk.listener.PreMatchListener
 
-class LSportsClient (
+class LSportsClient(
     configuration: LSportsConfig.() -> Unit
 ) {
     private val config = LSportsConfig().apply(configuration)

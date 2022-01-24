@@ -13,4 +13,6 @@ abstract class Listener(private val config: LSportsConfig) {
             networkRecoveryInterval = config.networkRecoveryInterval
             isAutomaticRecoveryEnabled = config.isAutomaticRecoveryEnabled
         }
+
+    abstract suspend fun listen(handler: Handler, prefetchSize: Int = 1)
 }

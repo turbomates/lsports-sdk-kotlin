@@ -15,7 +15,7 @@ This client ability to:
 
 ## Using LSports SDK
 
-- `Add our client to your dependencies` 
+- `Add LSports client to your dependencies`: 
 ```
 Gradle build.gradle.kts:
  
@@ -36,7 +36,7 @@ Maven pom.xml:
     </dependency>
 ```
 
-- `Use our client`: 
+- `Start using client`: 
 ```
     val client = LSportsClient {
         username = "<your_lsports_client_username>"
@@ -49,15 +49,13 @@ Maven pom.xml:
     val handler = InPlayHandler()
       
     client.inPlay.listen(handler)   // RabbitMQ listening
-    client.inPlay.api.schedule()    // API by http request
+    client.inPlay.api.schedule()    // API by HTTP request
     client.inPlay.api.schedule {
         sportsIds = listOf("4206")  // or add filters
     }   
 ```
-
-```
-    // Implement our inteface to get diffrent types of messages
-    // and set the desired behavior
+- `Implement Handler interfaces to get a different types of the messages and set the desired behavior`:
+``` 
     class InPlayHandler() : Handler {
         override fun handle(message: Message) {
             println(message)

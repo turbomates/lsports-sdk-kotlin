@@ -1,11 +1,11 @@
 package com.turbomates.kotlin.lsports.sdk.api
 
 import com.turbomates.kotlin.lsports.sdk.LSportsConfig
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.CancelOrder
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Order
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Schedule
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.Snapshot
-import com.turbomates.kotlin.lsports.sdk.api.inplay.request.ViewOrdered
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.CancelFixtureOrdersRequest
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.OrderFixturesRequest
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.OrderedFixturesRequest
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.ScheduleRequest
+import com.turbomates.kotlin.lsports.sdk.api.inplay.request.SnapshotRequest
 import com.turbomates.kotlin.lsports.sdk.model.response.CancelFixtureOrdersResponse
 import com.turbomates.kotlin.lsports.sdk.model.response.OrderFixturesResponse
 import com.turbomates.kotlin.lsports.sdk.model.response.ScheduleResponse
@@ -29,41 +29,46 @@ class InPlayAPI(
         }
     }
 
-    suspend fun schedule(request: Schedule): ScheduleResponse {
+    suspend fun schedule(request: ScheduleRequest.() -> Unit = {}): ScheduleResponse {
+        val parameters = ScheduleRequest().apply(request)
         return get("/schedule/GetInPlaySchedule") {
-            parameter("sportIds", request.sportIds.toString())
-            parameter("providerIds", request.providerIds.toString())
+            parameter("sportIds", parameters.sportIds.toString())
+            parameter("providerIds", parameters.providerIds.toString())
         }
     }
 
-    suspend fun orderFixtures(request: Order): OrderFixturesResponse {
+    suspend fun orderFixtures(request: OrderFixturesRequest.() -> Unit = {}): OrderFixturesResponse {
+        val parameters = OrderFixturesRequest().apply(request)
         return get("/schedule/OrderFixtures") {
-            parameter("sportIds", request.sportIds.toString())
-            parameter("fixtureIds", request.fixtureIds.toString())
-            parameter("providerIds", request.providerIds.toString())
+            parameter("sportIds", parameters.sportIds.toString())
+            parameter("fixtureIds", parameters.fixtureIds.toString())
+            parameter("providerIds", parameters.providerIds.toString())
         }
     }
 
-    suspend fun cancelFixtureOrders(request: CancelOrder): CancelFixtureOrdersResponse {
+    suspend fun cancelFixtureOrders(request: CancelFixtureOrdersRequest.() -> Unit = {}): CancelFixtureOrdersResponse {
+        val parameters = CancelFixtureOrdersRequest().apply(request)
         return get("/schedule/CancelFixtureOrders") {
-            parameter("sportIds", request.sportIds.toString())
-            parameter("fixtureIds", request.fixtureIds.toString())
-            parameter("providerIds", request.providerIds.toString())
+            parameter("sportIds", parameters.sportIds.toString())
+            parameter("fixtureIds", parameters.fixtureIds.toString())
+            parameter("providerIds", parameters.providerIds.toString())
         }
     }
 
-    suspend fun orderedFixtures(request: ViewOrdered): Any {
+    suspend fun orderedFixtures(request: OrderedFixturesRequest.() -> Unit = {}): Any {
+        val parameters = OrderedFixturesRequest().apply(request)
         return get("/schedule/GetOrderedFixtures") {
-            parameter("fixtureIds", request.fixtureIds.toString())
-            parameter("providerIds", request.providerIds.toString())
-            parameter("fromDate", request.fromDate)
-            parameter("toDate", request.toDate)
+            parameter("fixtureIds", parameters.fixtureIds.toString())
+            parameter("providerIds", parameters.providerIds.toString())
+            parameter("fromDate", parameters.fromDate)
+            parameter("toDate", parameters.toDate)
         }
     }
 
-    suspend fun snapshot(request: Snapshot): SnapshotResponse {
+    suspend fun snapshot(request: SnapshotRequest.() -> Unit = {}): SnapshotResponse {
+        val parameters = SnapshotRequest().apply(request)
         return get("/Snapshot/GetSnapshotJson") {
-            parameter("fixtureIds", request.fixtureIds.toString())
+            parameter("fixtureIds", parameters.fixtureIds.toString())
         }
     }
 

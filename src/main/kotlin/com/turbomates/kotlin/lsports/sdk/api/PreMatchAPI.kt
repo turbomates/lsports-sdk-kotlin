@@ -1,13 +1,13 @@
 package com.turbomates.kotlin.lsports.sdk.api
 
 import com.turbomates.kotlin.lsports.sdk.LSportsConfig
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Events
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.FixtureMarkets
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Fixtures
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Leagues
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightFixtures
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightLeagues
-import com.turbomates.kotlin.lsports.sdk.api.prematch.request.Scores
+import com.turbomates.kotlin.lsports.sdk.api.prematch.request.EventsRequest
+import com.turbomates.kotlin.lsports.sdk.api.prematch.request.FixtureMarketsRequest
+import com.turbomates.kotlin.lsports.sdk.api.prematch.request.FixturesRequest
+import com.turbomates.kotlin.lsports.sdk.api.prematch.request.LeaguesRequest
+import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightFixturesRequest
+import com.turbomates.kotlin.lsports.sdk.api.prematch.request.OutrightLeaguesRequest
+import com.turbomates.kotlin.lsports.sdk.api.prematch.request.ScoresRequest
 import com.turbomates.kotlin.lsports.sdk.model.response.BookmakersResponse
 import com.turbomates.kotlin.lsports.sdk.model.response.FixtureUpdateResponse
 import com.turbomates.kotlin.lsports.sdk.model.response.FullEventResponse
@@ -43,88 +43,95 @@ class PreMatchAPI(
     suspend fun locations(): LocationsResponse = get("/GetLocations")
     suspend fun bookmakers(): BookmakersResponse = get("/GetBookmakers")
 
-    suspend fun leagues(request: Leagues): LeaguesResponse {
+    suspend fun leagues(request: LeaguesRequest.() -> Unit = {}): LeaguesResponse {
+        val parameters = LeaguesRequest().apply(request)
         return get("/GetLeagues") {
-            parameter("sports", request.sportIds.toString())
-            parameter("locations", request.locationIds.toString())
+            parameter("sports", parameters.sportIds.toString())
+            parameter("locations", parameters.locationIds.toString())
         }
     }
 
-    suspend fun fixtures(request: Fixtures): FixtureUpdateResponse {
+    suspend fun fixtures(request: FixturesRequest.() -> Unit = {}): FixtureUpdateResponse {
+        val parameters = FixturesRequest().apply(request)
         return get("/GetFixtures") {
-            parameter("timestamp", request.timestamp)
-            parameter("fromDate", request.fromDate)
-            parameter("toDate", request.toDate)
-            parameter("sports", request.sportIds.toString())
-            parameter("locations", request.locationIds.toString())
-            parameter("leagues", request.leagueIds.toString())
-            parameter("fixtures", request.fixtureIds.toString())
-            parameter("statuses", request.statuses.toString())
+            parameter("timestamp", parameters.timestamp)
+            parameter("fromDate", parameters.fromDate)
+            parameter("toDate", parameters.toDate)
+            parameter("sports", parameters.sportIds.toString())
+            parameter("locations", parameters.locationIds.toString())
+            parameter("leagues", parameters.leagueIds.toString())
+            parameter("fixtures", parameters.fixtureIds.toString())
+            parameter("statuses", parameters.statuses.toString())
         }
     }
 
-    suspend fun outrightFixtures(request: OutrightFixtures): OutrightFixturesResponse {
+    suspend fun outrightFixtures(request: OutrightFixturesRequest.() -> Unit = {}): OutrightFixturesResponse {
+        val parameters = OutrightFixturesRequest().apply(request)
         return get("/GetOutrightFixtures") {
-            parameter("timestamp", request.timestamp)
-            parameter("fromDate", request.fromDate)
-            parameter("toDate", request.toDate)
-            parameter("sports", request.sportIds.toString())
-            parameter("locations", request.locationIds.toString())
-            parameter("fixtures", request.fixtureIds.toString())
-            parameter("statuses", request.statuses.toString())
+            parameter("timestamp", parameters.timestamp)
+            parameter("fromDate", parameters.fromDate)
+            parameter("toDate", parameters.toDate)
+            parameter("sports", parameters.sportIds.toString())
+            parameter("locations", parameters.locationIds.toString())
+            parameter("fixtures", parameters.fixtureIds.toString())
+            parameter("statuses", parameters.statuses.toString())
         }
     }
 
-    suspend fun outrightLeagues(request: OutrightLeagues): OutrightLeaguesResponse {
+    suspend fun outrightLeagues(request: OutrightLeaguesRequest.() -> Unit = {}): OutrightLeaguesResponse {
+        val parameters = OutrightLeaguesRequest().apply(request)
         return get("/GetOutrightLeagues") {
-            parameter("timestamp", request.timestamp)
-            parameter("sports", request.sportIds.toString())
-            parameter("locations", request.locationIds.toString())
-            parameter("fixtures", request.fixtureIds.toString())
-            parameter("statuses", request.statuses.toString())
+            parameter("timestamp", parameters.timestamp)
+            parameter("sports", parameters.sportIds.toString())
+            parameter("locations", parameters.locationIds.toString())
+            parameter("fixtures", parameters.fixtureIds.toString())
+            parameter("statuses", parameters.statuses.toString())
         }
     }
 
-    suspend fun fixtureMarkets(request: FixtureMarkets): MarketUpdateResponse {
+    suspend fun fixtureMarkets(request: FixtureMarketsRequest.() -> Unit = {}): MarketUpdateResponse {
+        val parameters = FixtureMarketsRequest().apply(request)
         return get("/GetFixtureMarkets") {
-            parameter("timestamp", request.timestamp)
-            parameter("fromDate", request.fromDate)
-            parameter("toDate", request.toDate)
-            parameter("sports", request.sportIds.toString())
-            parameter("locations", request.locationIds.toString())
-            parameter("leagues", request.leagueIds.toString())
-            parameter("fixtures", request.fixtureIds.toString())
-            parameter("statuses", request.statuses.toString())
-            parameter("bookmakers", request.bookmakerIds.toString())
-            parameter("markets", request.marketIds.toString())
+            parameter("timestamp", parameters.timestamp)
+            parameter("fromDate", parameters.fromDate)
+            parameter("toDate", parameters.toDate)
+            parameter("sports", parameters.sportIds.toString())
+            parameter("locations", parameters.locationIds.toString())
+            parameter("leagues", parameters.leagueIds.toString())
+            parameter("fixtures", parameters.fixtureIds.toString())
+            parameter("statuses", parameters.statuses.toString())
+            parameter("bookmakers", parameters.bookmakerIds.toString())
+            parameter("markets", parameters.marketIds.toString())
         }
     }
 
-    suspend fun scores(request: Scores): LivescoreUpdateResponse {
+    suspend fun scores(request: ScoresRequest.() -> Unit = {}): LivescoreUpdateResponse {
+        val parameters = ScoresRequest().apply(request)
         return get("/GetScores") {
-            parameter("timestamp", request.timestamp)
-            parameter("fromDate", request.fromDate)
-            parameter("toDate", request.toDate)
-            parameter("sports", request.sportIds.toString())
-            parameter("locations", request.locationIds.toString())
-            parameter("leagues", request.leagueIds.toString())
-            parameter("fixtures", request.fixtureIds.toString())
-            parameter("statuses", request.statuses.toString())
+            parameter("timestamp", parameters.timestamp)
+            parameter("fromDate", parameters.fromDate)
+            parameter("toDate", parameters.toDate)
+            parameter("sports", parameters.sportIds.toString())
+            parameter("locations", parameters.locationIds.toString())
+            parameter("leagues", parameters.leagueIds.toString())
+            parameter("fixtures", parameters.fixtureIds.toString())
+            parameter("statuses", parameters.statuses.toString())
         }
     }
 
-    suspend fun events(request: Events): FullEventResponse {
+    suspend fun events(request: EventsRequest.() -> Unit = {}): FullEventResponse {
+        val parameters = EventsRequest().apply(request)
         return get("/GetEvents") {
-            parameter("timestamp", request.timestamp)
-            parameter("fromDate", request.fromDate)
-            parameter("toDate", request.toDate)
-            parameter("sports", request.sportIds.toString())
-            parameter("locations", request.locationIds.toString())
-            parameter("leagues", request.leagueIds.toString())
-            parameter("fixtures", request.fixtureIds.toString())
-            parameter("statuses", request.statuses.toString())
-            parameter("bookmakers", request.bookmakerIds.toString())
-            parameter("markets", request.marketIds.toString())
+            parameter("timestamp", parameters.timestamp)
+            parameter("fromDate", parameters.fromDate)
+            parameter("toDate", parameters.toDate)
+            parameter("sports", parameters.sportIds.toString())
+            parameter("locations", parameters.locationIds.toString())
+            parameter("leagues", parameters.leagueIds.toString())
+            parameter("fixtures", parameters.fixtureIds.toString())
+            parameter("statuses", parameters.statuses.toString())
+            parameter("bookmakers", parameters.bookmakerIds.toString())
+            parameter("markets", parameters.marketIds.toString())
         }
     }
 

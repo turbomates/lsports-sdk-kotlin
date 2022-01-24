@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,6 +16,7 @@ interface Bet {
     val priceVolume: Double?
     val layPriceVolume: Double?
     val providerBetId: String?
+    val participantId: Long?
     val lastUpdate: LocalDateTime
 
     @Serializable

@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.serializer
 
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -14,7 +14,7 @@ object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("uuid", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): LocalDateTime {
-        val dateTimeString = decoder.decodeString().slice(0..26).replace("Z", "")
+        val dateTimeString = decoder.decodeString().replace("Z", "")
         return LocalDateTime.parse(dateTimeString)
     }
 

@@ -14,7 +14,7 @@ data class Scoreboard(
     @SerialName("Time")
     val time: Long,
     @SerialName("Results")
-    val results: List<Result>
+    val results: List<Result>? = null
 ) {
     @Serializable
     enum class Status(val value: Int) {

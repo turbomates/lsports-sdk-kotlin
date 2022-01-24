@@ -1,10 +1,8 @@
 package com.turbomates.kotlin.lsports.sdk.serializer
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset.UTC
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -18,11 +16,10 @@ object TimestampSerializer : KSerializer<LocalDateTime> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("uuid", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): LocalDateTime {
-        return Instant.fromEpochSeconds(decoder.decodeLong()).toLocalDateTime(TimeZone.UTC)
+        return LocalDateTime.ofInstant(Instant.ofEpochSecond(decoder.decodeLong()), UTC)
     }
 
     override fun serialize(encoder: Encoder, value: LocalDateTime) {
-        val milliseconds = value.toInstant(TimeZone.UTC).toEpochMilliseconds()
-        encoder.encodeLong(milliseconds)
+        encoder.encodeLong(value.toInstant(UTC).toEpochMilli())
     }
 }

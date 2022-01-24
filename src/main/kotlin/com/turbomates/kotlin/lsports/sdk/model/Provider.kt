@@ -1,6 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 
 interface Provider {
     val id: Long

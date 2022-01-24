@@ -16,6 +16,14 @@ data class Statistic(
     enum class Type(val value: Int) {
         @SerialName("1")
         CORNER(1),
+        @SerialName("2")
+        UNKNOWN_2(2),
+        @SerialName("3")
+        UNKNOWN_3(3),
+        @SerialName("4")
+        UNKNOWN_4(4),
+        @SerialName("5")
+        UNKNOWN_5(5),
         @SerialName("6")
         YELLOW_CARD(6),
         @SerialName("7")
@@ -26,12 +34,26 @@ data class Statistic(
         GOAL(9),
         @SerialName("10")
         SUBSTITUTION(10),
+        @SerialName("11")
+        UNKNOWN_11(11),
         @SerialName("12")
         FOULS(12),
+        @SerialName("13")
+        UNKNOWN_13(13),
+        @SerialName("14")
+        UNKNOWN_14(14),
+        @SerialName("15")
+        UNKNOWN_15(15),
+        @SerialName("16")
+        UNKNOWN_16(16),
+        @SerialName("17")
+        UNKNOWN_17(17),
         @SerialName("20")
         ACE(20),
         @SerialName("21")
         DOUBLE_FAULT(21),
+        @SerialName("23")
+        UNKNOWN_23(23),
         @SerialName("24")
         OWN_GOAL(24),
         @SerialName("25")

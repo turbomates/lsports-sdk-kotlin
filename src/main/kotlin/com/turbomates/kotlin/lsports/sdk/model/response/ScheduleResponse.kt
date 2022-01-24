@@ -13,62 +13,115 @@ import com.turbomates.kotlin.lsports.sdk.model.Participant
 import com.turbomates.kotlin.lsports.sdk.model.Provider
 import com.turbomates.kotlin.lsports.sdk.model.Response
 import com.turbomates.kotlin.lsports.sdk.model.Sport
-import kotlinx.datetime.LocalDateTime
+import com.turbomates.kotlin.lsports.sdk.serializer.IntBooleanSerializer
+import com.turbomates.kotlin.lsports.sdk.serializer.LocalDateTimeSerializer
+import com.turbomates.kotlin.lsports.sdk.serializer.TimestampSerializer
+import com.turbomates.kotlin.lsports.sdk.serializer.UUIDSerializer
+import java.time.LocalDateTime
 import java.util.UUID
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ScheduleResponse(
+    @SerialName("Header")
     override val header: HeaderImpl,
+    @SerialName("Body")
     val body: BodyImpl
 ) : Response {
+    @Serializable
     data class HeaderImpl(
+        @SerialName("Type")
         override val type: Message.Type,
+        @SerialName("ServerTimestamp")
+        @Serializable(with = TimestampSerializer::class)
         override val serverTimestamp: LocalDateTime,
+        @SerialName("MsgGuid")
+        @Serializable(with = UUIDSerializer::class)
         val msgGuid: UUID
     ) : Header
 
+    @Serializable
     data class BodyImpl(
+        @SerialName("InPlayEvents")
         val inPlayEvents: List<EventImpl>
     ) : Body
 
+    @Serializable
     data class EventImpl(
+        @SerialName("FixtureId")
         override val fixtureId: Long,
+        @SerialName("Fixture")
         val fixture: FixtureImpl,
+        @SerialName("Providers")
         val providers: List<ProviderImpl>
     ) : Event
 
+    @Serializable
     data class FixtureImpl(
+        @SerialName("Sport")
         override val sport: Sport,
+        @SerialName("Location")
         override val location: Location,
+        @SerialName("League")
         override val league: LeagueImpl,
+        @SerialName("LastUpdate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime,
+        @SerialName("StartDate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val startDate: LocalDateTime,
+        @SerialName("Status")
         override val status: Fixture.Status,
+        @SerialName("Participants")
         override val participants: List<ParticipantImpl>,
+        @SerialName("FixtureExtraData")
         override val fixtureExtraData: ExtraData? = null,
+        @SerialName("ExternalProviderId")
         override val externalProviderId: Long? = null
     ) : Fixture
 
+    @Serializable
     data class LeagueImpl(
+        @SerialName("Id")
         override val id: Long,
+        @SerialName("Name")
         override val name: String
     ) : League
 
+    @Serializable
     data class ParticipantImpl(
+        @SerialName("Id")
         override val id: Long,
+        @SerialName("Name")
         override val name: String,
+        @SerialName("Position")
         override val position: Int,
+        @SerialName("RotationId")
         override val rotationId: Long? = null,
+        @SerialName("IsActive")
+        @Serializable(with = IntBooleanSerializer::class)
         override val isActive: Boolean? = null,
+        @SerialName("ParticipantExtraData")
         override val participantExtraData: ExtraData? = null
     ) : Participant
 
+    @Serializable
     data class ProviderImpl(
+        @SerialName("Id")
         override val id: Long,
+        @SerialName("Name")
         override val name: String,
+        @SerialName("LastUpdate")
+        @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime? = null,
+        @SerialName("Bets")
         override val bets: List<Bet>? = null,
+        @SerialName("ProviderFixtureId")
         override val providerFixtureId: String? = null,
+        @SerialName("ProviderLeagueId")
         override val providerLeagueId: String? = null,
+        @SerialName("ProviderMarketId")
         override val providerMarketId: String? = null,
     ) : Provider
 }

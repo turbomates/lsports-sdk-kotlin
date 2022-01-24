@@ -11,7 +11,7 @@ import com.turbomates.kotlin.lsports.sdk.model.Provider
 import com.turbomates.kotlin.lsports.sdk.serializer.LocalDateTimeSerializer
 import com.turbomates.kotlin.lsports.sdk.serializer.TimestampSerializer
 import com.turbomates.kotlin.lsports.sdk.serializer.UUIDSerializer
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import java.util.UUID
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -106,6 +106,8 @@ data class MarketUpdateMessage(
         override val layPriceVolume: Double? = null,
         @SerialName("ProviderBetId")
         override val providerBetId: String? = null,
+        @SerialName("ParticipantId")
+        override val participantId: Long? = null,
         @SerialName("LastUpdate")
         @Serializable(with = LocalDateTimeSerializer::class)
         override val lastUpdate: LocalDateTime

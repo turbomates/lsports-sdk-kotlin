@@ -8,6 +8,7 @@ class InPlayListener(
 
     override suspend fun listen(handler: Handler, prefetchSize: Int) {
         connectionFactory.host = config.inPlayHost
-        Consumer(handler, connectionFactory.newConnection(), config.inPlayQueueName(), prefetchSize).consume()
+        consumer = Consumer(handler, connectionFactory.newConnection(), "_${config.inPlayPackageId}_", prefetchSize)
+        consumer.consume()
     }
 }

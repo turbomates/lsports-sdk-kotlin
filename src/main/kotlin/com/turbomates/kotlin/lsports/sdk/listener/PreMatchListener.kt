@@ -8,6 +8,7 @@ class PreMatchListener(
 
     override suspend fun listen(handler: Handler, prefetchSize: Int) {
         connectionFactory.host = config.preMatchHost
-        Consumer(handler, connectionFactory.newConnection(), config.preMatchQueueName(), prefetchSize).consume()
+        consumer = Consumer(handler, connectionFactory.newConnection(), "_${config.preMatchPackageId}_", prefetchSize)
+        consumer.consume()
     }
 }

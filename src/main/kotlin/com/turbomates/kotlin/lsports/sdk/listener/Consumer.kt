@@ -5,18 +5,19 @@ import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.isActive
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.Closeable
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.channels.Channel as KChannel
 
 class Consumer(
@@ -24,7 +25,7 @@ class Consumer(
     connection: Connection,
     queue: String,
     private val prefetchSize: Int
-) : Closeable {
+) : CoroutineScope by CoroutineScope(Dispatchers.IO), Closeable {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -43,7 +44,7 @@ class Consumer(
         )
     }
 
-    private suspend fun consume() {
+    private suspend fun consumeOne() {
         try {
             val delivery = deliveries.receive()
             val deliveryTag = delivery.envelope.deliveryTag
@@ -64,12 +65,10 @@ class Consumer(
         }
     }
 
-    suspend fun consume(
-        coroutineContext: CoroutineContext = EmptyCoroutineContext
-    ) = coroutineScope {
-        while (true) {
+    suspend fun consume() = coroutineScope {
+        while (isActive) {
             (1..prefetchSize).map {
-                async(coroutineContext) { consume() }
+                async(coroutineContext) { consumeOne() }
             }.awaitAll()
         }
     }
@@ -87,7 +86,6 @@ private class DeliverCallbackListener(
 ) : DeliverCallback {
     override fun handle(consumerTag: String?, delivery: Delivery) {
         try {
-
             deliveries.trySendBlocking(delivery)
         } catch (e: ClosedSendChannelException) {
             logger.debug("Can't receive a message. Consumer $consumerTag has been cancelled")

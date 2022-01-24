@@ -39,11 +39,11 @@ Maven pom.xml:
 - `Start using client`: 
 ```
     val client = LSportsClient {
-        username = "<your_lsports_client_username>"
-        password = "<your_lsports_client_password>"
-        inPlayPackageId = "1111"
-        preMatchPackageId = "2222"
-        guid = "42a23af9-8179-420e-bb6c-f07d31ca1782"
+        username = "<lsports_client_username>"
+        password = "<lsports_client_password>"
+        inPlayPackageId = "<in_play_package_id>"
+        preMatchPackageId = "<pre_match_package_id>"
+        guid = "<guid>"
     }
 
     val handler = InPlayHandler()
@@ -51,7 +51,7 @@ Maven pom.xml:
     client.inPlay.listen(handler)   // RabbitMQ listening
     client.inPlay.api.schedule()    // API by HTTP request
     client.inPlay.api.schedule {
-        sportsIds = listOf("4206")  // or add filters
+        sportsIds = listOf("<sport_id>")  // or add filters
     }   
 ```
 - `Implement Handler interfaces to get a different types of the messages and set the desired behavior`:

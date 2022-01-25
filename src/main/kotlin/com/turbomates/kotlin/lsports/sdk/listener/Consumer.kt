@@ -7,12 +7,11 @@ import com.rabbitmq.client.Delivery
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -23,7 +22,7 @@ class Consumer(
     connection: Connection,
     private val queue: String,
     private val prefetchSize: Int
-) : CoroutineScope by CoroutineScope(Dispatchers.IO), Closeable {
+) : Closeable {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -31,10 +30,12 @@ class Consumer(
         basicQos(prefetchSize, false)
     }
 
-    private val deliveriesFlow: MutableSharedFlow<Delivery> = MutableSharedFlow(extraBufferCapacity = prefetchSize)
+    private var deliveriesFlow: MutableSharedFlow<Delivery> = MutableSharedFlow(
+        extraBufferCapacity = prefetchSize,
+        onBufferOverflow = BufferOverflow.SUSPEND
+    )
 
     private lateinit var consumerTag: String
-
 
     suspend fun consume() {
         consumerTag = channel.basicConsume(
@@ -44,7 +45,7 @@ class Consumer(
         )
 
         deliveriesFlow.collect {
-            async { consumeDelivery(it) }
+            consumeDelivery(it)
         }
     }
 
@@ -86,7 +87,7 @@ private class DeliverCallbackListener(
 ) : CoroutineScope by CoroutineScope(Dispatchers.IO), DeliverCallback {
     override fun handle(consumerTag: String?, delivery: Delivery) {
         try {
-            runBlocking { deliveriesFlow.emit(delivery) }
+            deliveriesFlow.tryEmit(delivery)
         } catch (e: ClosedSendChannelException) {
             logger.debug("Can't receive a message. Consumer $consumerTag has been cancelled")
         }

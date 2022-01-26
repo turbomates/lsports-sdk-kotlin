@@ -5,6 +5,7 @@ import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
+import java.io.Closeable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.Closeable
 
 class Consumer(
     private val handler: Handler,
@@ -52,11 +52,11 @@ class Consumer(
     override fun close() {
         try {
             channel.basicCancel(consumerTag)
-        } catch (e: Exception) {
-            when (e) {
-                is UninitializedPropertyAccessException -> throw Exception("Consumer has not been initialized")
-                else -> throw e
-            }
+        } catch (expected: Exception) {
+            if (expected is UninitializedPropertyAccessException)
+                throw UninitializedPropertyAccessException("Consumer has not been initialized")
+
+            throw expected
         }
     }
 
@@ -72,11 +72,11 @@ class Consumer(
                 logger.error("Listener was cancelled $consumerTag. Message ${logging.message}")
                 channel.basicNack(delivery.envelope.deliveryTag, false, true)
             }
-        } catch (e: Exception) {
-            when (e) {
-                is ClosedReceiveChannelException -> throw Exception("Cancel exception")
-                else -> throw e
-            }
+        } catch (expected: Exception) {
+            if (expected is ClosedReceiveChannelException)
+                throw ClosedReceiveChannelException("Cancel exception")
+
+            throw expected
         }
     }
 }
@@ -88,7 +88,7 @@ private class DeliverCallbackListener(
     override fun handle(consumerTag: String?, delivery: Delivery) {
         try {
             deliveriesFlow.tryEmit(delivery)
-        } catch (e: ClosedSendChannelException) {
+        } catch (expected: ClosedSendChannelException) {
             logger.debug("Can't receive a message. Consumer $consumerTag has been cancelled")
         }
     }

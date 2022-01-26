@@ -5,7 +5,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("deps") {
             version("ktor", "1.6.7")
-            version("log4j", "2.15.0")
+            version("log4j", "2.17.1")
             version("kotlin", "1.6.10")
             version("detekt", "1.19.0")
             version("rabbitmq_amqp_client", "5.14.0")

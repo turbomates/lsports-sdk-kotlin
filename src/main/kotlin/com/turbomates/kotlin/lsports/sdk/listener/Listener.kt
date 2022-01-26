@@ -22,11 +22,11 @@ abstract class Listener(private val config: LSportsConfig) : Closeable {
     override fun close() {
         try {
             consumer.close()
-        } catch (e: Exception) {
-            when (e) {
-                is UninitializedPropertyAccessException -> throw Exception("Consumer has not been initialized")
-                else -> throw e
-            }
+        } catch (expected: Exception) {
+            if (expected is UninitializedPropertyAccessException)
+                throw UninitializedPropertyAccessException("Consumer has not been initialized")
+
+            throw expected
         }
     }
 }

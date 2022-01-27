@@ -27,15 +27,6 @@ body:
     validations:
       required: true
 
-  - type: textarea
-    id: solution
-    attributes:
-      label: Proposed Solution
-      description: |
-        Suggest how to implement the addition or change.
-    validations:
-      required: false
-
   - type: input
     id: kotlin-sdk-version
     attributes:
@@ -46,7 +37,7 @@ body:
   - type: input
     id: platform-used
     attributes:
-      label: Platform (JVM/JS/Native)
+      label: Platform
     validations:
       required: true
 

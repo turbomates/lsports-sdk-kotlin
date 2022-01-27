@@ -41,25 +41,6 @@ body:
     validations:
       required: true
 
-  - type: textarea
-    id: solution
-    attributes:
-      label: Possible Solution
-      description: |
-        Suggest a fix/reason for the bug
-    validations:
-      required: false
-
-  - type: textarea
-    id: context
-    attributes:
-      label: Context
-      description: |
-        How has this issue affected you? What are you trying to accomplish?
-        Providing context helps us come up with a solution that is most useful in the real world.
-    validations:
-      required: false
-
   - type: input
     id: kotlin-sdk-version
     attributes:
@@ -70,7 +51,7 @@ body:
   - type: input
     id: platform-used
     attributes:
-      label: Platform (JVM/JS/Native)
+      label: Platform
     validations:
       required: true
 

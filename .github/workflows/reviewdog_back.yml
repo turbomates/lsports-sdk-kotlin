@@ -1,7 +1,7 @@
 name: reviewdog-back
 
 on:
-  pull_request:
+  push:
     paths-ignore:
       - '**.md'
 jobs:
@@ -25,10 +25,5 @@ jobs:
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN}}
         run: |
-          curl --request GET \
-                    --url https://raw.githubusercontent.com/turbomates/kotlin-back-sdk/main/detekt.yml \
-                    --silent \
-                    --location \
-                    --output detekt.yml
           ./gradlew detekt
           cat build/reports/detekt/detekt.xml | reviewdog -f=checkstyle -name="detekt" -reporter="github-pr-check" -level="error"

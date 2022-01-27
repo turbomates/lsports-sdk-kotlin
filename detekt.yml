@@ -44,19 +44,7 @@ style:
   UnnecessaryAbstractClass:
     active: false
   MagicNumber:
-    active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
-    ignoreRanges: true
-    ignorePropertyDeclaration: true
-    ignoreNumbers:
-      - '-1'
-      - '0'
-      - '1'
-      - '2'
-      - '3'
-      - '403'
-      - '422'
-      - '200'
+    active: false
 complexity:
   ComplexMethod:
     active: true

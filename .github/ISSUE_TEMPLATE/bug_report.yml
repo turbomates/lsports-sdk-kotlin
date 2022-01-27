@@ -1,5 +1,5 @@
-name: "\U0001F41B Bug Report"
-description: "Something isn't working as expected 🤔"
+name: "Bug Report"
+description: "Something that doesn't work as expected"
 title: "(short issue description)"
 labels: [bug, needs-triage]
 body:

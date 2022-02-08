@@ -5,6 +5,7 @@ import com.turbomates.kotlin.lsports.sdk.model.message.HeartbeatMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.KeepAliveMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.LivescoreUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.MarketUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.OutrightLeaguesMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
 
 interface Handler {
@@ -14,4 +15,5 @@ interface Handler {
     fun handle(message: KeepAliveMessage)
     fun handle(message: HeartbeatMessage)
     fun handle(message: SettlementMessage)
+    fun handle(message: OutrightLeaguesMessage)
 }

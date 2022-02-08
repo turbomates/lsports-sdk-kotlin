@@ -21,9 +21,9 @@ Gradle build.gradle.kts:
  
     dependencies {
         // Kotlin DSL
-        implementation("com.turbomates:kotlin-lsports-sdk:0.0.3-alpha")
+        implementation("com.turbomates:kotlin-lsports-sdk:0.1.0-alpha")
         // Groovy
-        implementation 'com.turbomates:kotlin-lsports-sdk:0.0.3-alpha'
+        implementation 'com.turbomates:kotlin-lsports-sdk:0.1.0-alpha'
     }
 
 
@@ -32,7 +32,7 @@ Maven pom.xml:
     <dependency>
         <groupId>com.turbomates</groupId>
         <artifactId>kotlin-lsports-sdk</artifactId>
-        <version>0.0.3-alpha</version>
+        <version>0.1.0-alpha</version>
     </dependency>
 ```
 

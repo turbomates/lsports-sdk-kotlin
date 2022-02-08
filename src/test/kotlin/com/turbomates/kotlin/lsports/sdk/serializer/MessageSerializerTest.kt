@@ -8,6 +8,7 @@ import com.turbomates.kotlin.lsports.sdk.model.message.HeartbeatMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.KeepAliveMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.LivescoreUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.MarketUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.OutrightLeaguesMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions
@@ -101,5 +102,18 @@ class MessageSerializerTest {
             Bet.Settlement.LOSER,
             settlementMessage.body.events.first().markets.first().providers.first().bets.first().settlement
         )
+    }
+
+    @Test
+    fun `outright leagues message deserialization`() {
+        val incomeData =
+            "{\"Header\":{\"Type\":38,\"MsgId\":10,\"MsgGuid\":\"c64c8f2b-de0b-412b-a927-423f1fc3384b\",\"ServerTimestamp\":1644313411},\"Body\":{\"Competition\":{\"Id\":40567,\"Name\":\"ATP Rome\",\"Type\":3,\"Competitions\":[{\"Id\":2021,\"Name\":\"2021\",\"Type\":4,\"Events\":[{\"FixtureId\":6936388,\"Livescore\":null,\"Markets\":null,\"OutrightLeague\":{\"Sport\":{\"Id\":54094,\"Name\":\"Tennis\"},\"Location\":{\"Id\":215,\"Name\":\"Italy\"},\"LastUpdate\":\"2021-09-13T17:22:30.489242\",\"Status\":3}}]}]}}}"
+        val message = Json.decodeFromString(MessageSerializer, incomeData)
+
+        Assertions.assertTrue(message is OutrightLeaguesMessage)
+        val outrightLeaguesMessage = message as OutrightLeaguesMessage
+        assertEquals(Message.Type.OUTRIGHT_LEAGUES, outrightLeaguesMessage.header.type)
+        assertEquals(UUID.fromString("c64c8f2b-de0b-412b-a927-423f1fc3384b"), outrightLeaguesMessage.header.msgGuid)
+        assertEquals(6936388, outrightLeaguesMessage.body.competition.competitions!!.first().events!!.first().fixtureId)
     }
 }

@@ -9,6 +9,7 @@ import com.turbomates.kotlin.lsports.sdk.model.message.HeartbeatMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.KeepAliveMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.LivescoreUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.MarketUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.OutrightLeaguesMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
 import java.io.Closeable
@@ -80,6 +81,7 @@ class Consumer(
                     is KeepAliveMessage -> handler.handle(message)
                     is HeartbeatMessage -> handler.handle(message)
                     is SettlementMessage -> handler.handle(message)
+                    is OutrightLeaguesMessage -> handler.handle(message)
                 }
 
                 channel.basicAck(deliveryTag, false)

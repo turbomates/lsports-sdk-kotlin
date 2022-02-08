@@ -4,6 +4,12 @@ import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
+import com.turbomates.kotlin.lsports.sdk.model.message.FixtureUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.HeartbeatMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.KeepAliveMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.LivescoreUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.MarketUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
 import java.io.Closeable
 import kotlinx.coroutines.CoroutineScope
@@ -66,7 +72,16 @@ class Consumer(
 
             try {
                 val message = Json.decodeFromString(MessageSerializer, String(delivery.body))
-                handler.handle(message)
+
+                when (message) {
+                    is FixtureUpdateMessage -> handler.handle(message)
+                    is LivescoreUpdateMessage -> handler.handle(message)
+                    is MarketUpdateMessage -> handler.handle(message)
+                    is KeepAliveMessage -> handler.handle(message)
+                    is HeartbeatMessage -> handler.handle(message)
+                    is SettlementMessage -> handler.handle(message)
+                }
+
                 channel.basicAck(deliveryTag, false)
             } catch (logging: Throwable) {
                 logger.error("Listener was cancelled $consumerTag. Message ${logging.message}")

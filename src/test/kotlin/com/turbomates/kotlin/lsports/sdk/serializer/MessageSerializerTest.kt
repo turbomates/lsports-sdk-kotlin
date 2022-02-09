@@ -116,4 +116,15 @@ class MessageSerializerTest {
         assertEquals(UUID.fromString("c64c8f2b-de0b-412b-a927-423f1fc3384b"), outrightLeaguesMessage.header.msgGuid)
         assertEquals(6936388, outrightLeaguesMessage.body.competition.competitions!!.first().events!!.first().fixtureId)
     }
+
+    @Test
+    fun `outright leagues bad message deserialization`() {
+        val incomeData = "{\"Header\":{\"Type\":38,\"MsgId\":28,\"MsgGuid\":\"74ce0625-a3bc-41d4-9a6b-a4159eb36200\",\"ServerTimestamp\":1644412183},\"Body\":{\"Competition\":{\"Id\":0,\"Name\":null,\"Type\":0}}}"
+        val message = Json.decodeFromString(MessageSerializer, incomeData)
+
+        Assertions.assertTrue(message is OutrightLeaguesMessage)
+        val outrightLeaguesMessage = message as OutrightLeaguesMessage
+        assertEquals(Message.Type.OUTRIGHT_LEAGUES, outrightLeaguesMessage.header.type)
+        assertEquals(UUID.fromString("74ce0625-a3bc-41d4-9a6b-a4159eb36200"), outrightLeaguesMessage.header.msgGuid)
+    }
 }

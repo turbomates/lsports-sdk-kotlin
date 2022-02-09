@@ -46,7 +46,7 @@ data class OutrightLeaguesMessage(
         @SerialName("Id")
         override val id: Long,
         @SerialName("Name")
-        override val name: String,
+        override val name: String? = null,
         @SerialName("Type")
         override val type: Competition.Type,
         @SerialName("Competitions")

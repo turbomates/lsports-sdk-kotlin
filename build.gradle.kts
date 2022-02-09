@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.turbomates"
-version = "0.1.1-alpha"
+version = "0.1.2-alpha"
 
 repositories {
     mavenCentral()
@@ -140,4 +140,6 @@ signing {
 
 nexusStaging {
     serverUrl = "https://s01.oss.sonatype.org/service/local/"
+    username = project.properties["ossrhUsername"].toString()
+    password = project.properties["ossrhPassword"].toString()
 }

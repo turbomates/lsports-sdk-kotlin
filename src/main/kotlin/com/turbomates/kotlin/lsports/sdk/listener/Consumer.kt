@@ -70,9 +70,10 @@ class Consumer(
     private fun consumeDelivery(delivery: Delivery) {
         try {
             val deliveryTag = delivery.envelope.deliveryTag
+            val deliveryBody = String(delivery.body)
 
             try {
-                val message = Json.decodeFromString(MessageSerializer, String(delivery.body))
+                val message = Json.decodeFromString(MessageSerializer, deliveryBody)
 
                 when (message) {
                     is FixtureUpdateMessage -> handler.handle(message)
@@ -86,7 +87,7 @@ class Consumer(
 
                 channel.basicAck(deliveryTag, false)
             } catch (logging: Throwable) {
-                logger.error("Listener was cancelled $consumerTag. Message ${logging.message}")
+                logger.error("Listener was cancelled $consumerTag. Error: ${logging.message}; Message: $deliveryBody")
                 channel.basicNack(delivery.envelope.deliveryTag, false, true)
             }
         } catch (expected: Exception) {

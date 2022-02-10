@@ -110,6 +110,8 @@ data class MarketUpdateMessage(
         override val participantId: Long? = null,
         @SerialName("LastUpdate")
         @Serializable(with = LocalDateTimeSerializer::class)
-        override val lastUpdate: LocalDateTime
+        override val lastUpdate: LocalDateTime,
+        @SerialName("Settlement")
+        val settlement: Bet.Settlement? = null
     ) : Bet
 }

@@ -12,7 +12,6 @@ import com.turbomates.kotlin.lsports.sdk.model.message.MarketUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.OutrightLeaguesMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
-import java.io.Closeable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.io.Closeable
 
 class Consumer(
     private val handler: Handler,
@@ -67,7 +67,7 @@ class Consumer(
         }
     }
 
-    private fun consumeDelivery(delivery: Delivery) {
+    private suspend fun consumeDelivery(delivery: Delivery) {
         try {
             val deliveryTag = delivery.envelope.deliveryTag
             val deliveryBody = String(delivery.body)

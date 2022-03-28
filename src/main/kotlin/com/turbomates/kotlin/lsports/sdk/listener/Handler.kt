@@ -9,11 +9,11 @@ import com.turbomates.kotlin.lsports.sdk.model.message.OutrightLeaguesMessage
 import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
 
 interface Handler {
-    fun handle(message: FixtureUpdateMessage)
-    fun handle(message: LivescoreUpdateMessage)
-    fun handle(message: MarketUpdateMessage)
-    fun handle(message: KeepAliveMessage)
-    fun handle(message: HeartbeatMessage)
-    fun handle(message: SettlementMessage)
-    fun handle(message: OutrightLeaguesMessage)
+    suspend fun handle(message: FixtureUpdateMessage)
+    suspend fun handle(message: LivescoreUpdateMessage)
+    suspend fun handle(message: MarketUpdateMessage)
+    suspend fun handle(message: KeepAliveMessage)
+    suspend fun handle(message: HeartbeatMessage)
+    suspend fun handle(message: SettlementMessage)
+    suspend fun handle(message: OutrightLeaguesMessage)
 }

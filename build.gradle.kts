@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.turbomates"
-version = "0.1.3-alpha"
+version = "0.1.4-alpha"
 
 repositories {
     mavenCentral()

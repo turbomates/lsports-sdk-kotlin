@@ -1,39 +1,53 @@
+@file:UseSerializers(OffsetDateTimeSerializer::class)
+
 package com.turbomates.kotlin.lsports.sdk.model
 
-import java.time.LocalDateTime
+import com.turbomates.kotlin.lsports.sdk.serializer.EnumWithValueSerializer
+import com.turbomates.kotlin.lsports.sdk.serializer.OffsetDateTimeSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
+import kotlinx.serialization.builtins.serializer
+import java.time.OffsetDateTime
 
-interface Fixture {
-    val sport: Sport
-    val location: Location
-    val league: League
-    val lastUpdate: LocalDateTime
-    val startDate: LocalDateTime
-    val status: Status
-    val participants: List<Participant>
-    val fixtureExtraData: ExtraData?
-    val externalProviderId: Long?
-
-    @Serializable
+@Serializable
+data class Fixture(
+    @SerialName("Sport")
+    val sport: Sport,
+    @SerialName("Location")
+    val location: Location,
+    @SerialName("League")
+    val league: League,
+    @SerialName("LastUpdate")
+    val lastUpdate: OffsetDateTime,
+    @SerialName("StartDate")
+    val startDate: OffsetDateTime,
+    @SerialName("Status")
+    val status: Status,
+    @SerialName("Participants")
+    val participants: List<Participant>,
+    @SerialName("FixtureExtraData")
+    val fixtureExtraData: List<ExtraData>? = null,
+    @SerialName("ExternalProviderId")
+    val externalProviderId: Long? = null
+) {
+    @Serializable(with = StatusSerializer::class)
     enum class Status(val value: Int) {
-        @SerialName("1")
         NOT_STARTED(1),
-        @SerialName("2")
         IN_PROGRESS(2),
-        @SerialName("3")
         FINISHED(3),
-        @SerialName("4")
         CANCELLED(4),
-        @SerialName("5")
         POSTPONED(5),
-        @SerialName("6")
         INTERRUPTED(6),
-        @SerialName("7")
         ABANDONED(7),
-        @SerialName("8")
         COVERAGE_LOST(8),
-        @SerialName("9")
         ABOUT_TO_START(9)
     }
+
+    private class StatusSerializer : EnumWithValueSerializer<Status, Int>(
+        "FixtureStatus",
+        Int.serializer(),
+        { value },
+        { v -> Status.values().first { it.value == v } }
+    )
 }

@@ -1,15 +1,15 @@
 package com.turbomates.kotlin.lsports.sdk.serializer
 
-import com.turbomates.kotlin.lsports.sdk.model.Bet
-import com.turbomates.kotlin.lsports.sdk.model.Message
+import com.turbomates.kotlin.lsports.sdk._model.Bet
+import com.turbomates.kotlin.lsports.sdk.api.message.Message
 import com.turbomates.kotlin.lsports.sdk.model.Scoreboard
-import com.turbomates.kotlin.lsports.sdk.model.message.FixtureUpdateMessage
-import com.turbomates.kotlin.lsports.sdk.model.message.HeartbeatMessage
-import com.turbomates.kotlin.lsports.sdk.model.message.KeepAliveMessage
-import com.turbomates.kotlin.lsports.sdk.model.message.LivescoreUpdateMessage
-import com.turbomates.kotlin.lsports.sdk.model.message.MarketUpdateMessage
-import com.turbomates.kotlin.lsports.sdk.model.message.OutrightLeaguesMessage
-import com.turbomates.kotlin.lsports.sdk.model.message.SettlementMessage
+import com.turbomates.kotlin.lsports.sdk._model.message.FixtureUpdateMessage
+import com.turbomates.kotlin.lsports.sdk._model.message.HeartbeatMessage
+import com.turbomates.kotlin.lsports.sdk._model.message.KeepAliveMessage
+import com.turbomates.kotlin.lsports.sdk._model.message.LivescoreUpdateMessage
+import com.turbomates.kotlin.lsports.sdk._model.message.MarketUpdateMessage
+import com.turbomates.kotlin.lsports.sdk._model.message.OutrightLeaguesMessage
+import com.turbomates.kotlin.lsports.sdk._model.message.SettlementMessage
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

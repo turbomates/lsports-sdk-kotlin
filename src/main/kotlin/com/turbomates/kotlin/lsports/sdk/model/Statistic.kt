@@ -1,7 +1,9 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
+import com.turbomates.kotlin.lsports.sdk.serializer.EnumWithValueSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
 
 @Serializable
 data class Statistic(
@@ -12,67 +14,139 @@ data class Statistic(
     @SerialName("Incidents")
     val incidents: List<Incident>? = null
 ) {
-    @Serializable
+    @Serializable(with = TypeSerializer::class)
     enum class Type(val value: Int) {
-        @SerialName("1")
-        CORNER(1),
-        @SerialName("2")
-        UNKNOWN_2(2),
-        @SerialName("3")
-        UNKNOWN_3(3),
-        @SerialName("4")
-        UNKNOWN_4(4),
-        @SerialName("5")
-        UNKNOWN_5(5),
-        @SerialName("6")
-        YELLOW_CARD(6),
-        @SerialName("7")
-        RED_CARD(7),
-        @SerialName("8")
-        PENALTY(8),
-        @SerialName("9")
-        GOAL(9),
-        @SerialName("10")
-        SUBSTITUTION(10),
-        @SerialName("11")
-        UNKNOWN_11(11),
-        @SerialName("12")
+        CORNERS(1),
+        SHOTS_ON_TARGET(2),
+        SHOTS_OFF_TARGET(3),
+        ATTACKS(4),
+        DANGEROUS_ATTACKS(5),
+        YELLOW_CARDS(6),
+        RED_CARDS(7),
+        PENALTIES(8),
+        GOALS(9),
+        SUBSTITUTIONS(10),
+        POSSESSIONS(11),
         FOULS(12),
-        @SerialName("13")
-        UNKNOWN_13(13),
-        @SerialName("14")
-        UNKNOWN_14(14),
-        @SerialName("15")
-        UNKNOWN_15(15),
-        @SerialName("16")
-        UNKNOWN_16(16),
-        @SerialName("17")
-        UNKNOWN_17(17),
-        @SerialName("20")
-        ACE(20),
-        @SerialName("21")
-        DOUBLE_FAULT(21),
-        @SerialName("23")
-        UNKNOWN_23(23),
-        @SerialName("24")
+        FREE_KICKS(13),
+        GOAL_KICKS(14),
+        OFFSIDES(15),
+        BLOCKED_SHOTS(16),
+        THROW_INS(17),
+        WOODWORK_SHOTS(18),
+        CLEARANCE(19),
+        ACES(20),
+        DOUBLE_FAULTS(21),
+        SERVICE_POINT(22),
+        BREAK_POINTS(23),
         OWN_GOAL(24),
-        @SerialName("25")
         PENALTY_GOAL(25),
-        @SerialName("27")
         SCORE(27),
-        @SerialName("28")
-        TWO_POINT(28),
-        @SerialName("30")
-        THREE_POINT(30),
-        @SerialName("31")
-        TIME_OUT(31),
-        @SerialName("32")
-        FREE_THROW(32),
-        @SerialName("33")
-        HIT(33),
-        @SerialName("34")
+        TWO_POINTS(28),
+        THREE_POINTS(30),
+        TIME_OUTS(31),
+        FREE_THROWS(32),
+        HITS(33),
         FIRST_SERVE_WIN(34),
-        @SerialName("40")
-        MISSED_PENALTY(40)
+        WICKETS_TAKEN(36),
+        NO_BALL(38),
+        LEG_BYE(39),
+        MISSED_PENALTIES(40),
+        LONGEST_POINT_STREAK(47),
+        LONGEST_ACES_STREAK(52),
+        NUMBER_OF_POINTS(55),
+        LAST_10_GAMES_BREAK_POINT_CONVERSION(56),
+        FIVE_GAME_STREAK_IN_ROW(59),
+        LAST_GAMES_WON_TO_LOVE(60),
+        LAST_GAMES_WON_TILL_15(61),
+        LAST_GAMES_BROKEN_STREAK(62),
+        SECOND_SERVE_RETURN_POINTS_WON(63),
+        LAST_15_POINTS_WON(64),
+        SERVICE_GAME_WON(65),
+        BREAK_POINTS_CONVERTED(66),
+        BREAK_POINTS_SAVED(67),
+        SECOND_SERVE_WINS(68),
+        FIRST_SERVES_IN(69),
+        FIRST_SERVES_RETURN_POINTS_WON(70),
+        RETURN_GAMES_WON(71),
+        MOMENTUM(72),
+        RUNS(93),
+        GOAL_ATTEMPTS(117),
+        TOTAL_YARDS(122),
+        PASSING_YARDS(123),
+        RUSHING_YARDS(124),
+        PENALTIES_YARDS(126),
+        TURNOVERS(127),
+        PUNTS(128),
+        TOUCHDOWNS(129),
+        RUSHING_TOUCHDOWNS(130),
+        PASSING_TOUCHDOWNS(131),
+        TURNOVER_TOUCHDOWNS(132),
+        INTERCEPTION_TOUCHDOWNS(133),
+        FUMBLES_LOST(134),
+        FIELD_GOALS_SUCCEEDED(135),
+        FIELD_GOALS_ATTEMPTED(136),
+        NET_YARDS(137),
+        RED_ZONE_EFFICIENCY(138),
+        RUSH_ATTEMPTS(139),
+        THIRD_DOWN_EFFICIENCY(140),
+        PLAYS(141),
+        DRIVE_FIELD_GOAL_ATTEMPT(142),
+        DRIVE_FIRST_DOWN_NO(143),
+        DRIVE_FIRST_DOWN_YES(144),
+        DRIVE_OFFENSIVE_TOUCH_DOWN(145),
+        DRIVE_PUNT(146),
+        DRIVE_TURNOVER(147),
+        PASS_ATTEMPTS(148),
+        PASS_COMPLETIONS(149),
+        SAFETIES(150),
+        TWO_POINT_CONVERSIONS(151),
+        SACKS_ALLOWED(152),
+        EXTRA_POINT(153),
+        MINUTES_BATTED(154),
+        OVERS_BOWLED(155),
+        BOUNDARY_SIXES(156),
+        ECONOMY_RATE(157),
+        TYPE_RUNS_SCORED(159),
+        EXTRAS(160),
+        NO_BALLS(161),
+        BYE(162),
+        MAIDENS_BOWLED(163),
+        BALLS_BOWLED(164),
+        WIDE(165),
+        RUN_RATE(166),
+        BALLS_FACED(167),
+        RUNS_CONCEDED(169),
+        BOUNDARY_FOURS(170),
+        FOURS(182),
+        SIXES(183),
+        PLAYER_ASSISTS(1036),
+        PULL_INBOUNDS(1042),
+        PULL_OUT_OF_BOUNDS(1043),
+        BLOCK(1044),
+        THROWAWAY(1047),
+        THROWAWAY_CAUSED(1048),
+        PENALTY_US_WHILE_WE_HAVE_POSSESSION(1049),
+        PENALTY_US_WHILE_THEY_HAVE_POSSESSION(1050),
+        PENALTY_THEM_WHILE_WE_HAVE_POSSESSION(1051),
+        PENALTY_THEM_WHILE_THEY_HAVE_POSSESSION(1052),
+        MIDPOINT_TIMEOUT_CALLED_BY_US(1053),
+        MIDPOINT_TIMEOUT_CALLED_BY_THEM(1054),
+        STALL(1055),
+        THROWAWAY_CAUSED_VIA_STALL(1056),
+        DROP(1057),
+        DROPPED(1065),
+        SET_DEFENSE_SUBS(1068),
+        SET_OFFENSE_SUBS(1069),
+        INJURY_WHILE_WE_HAVE_POSSESSIONS(1070),
+        INJURY_WHILE_THEY_HAVE_POSSESSIONS(1071),
+        OFFSIDE_AGAINST_US(1072)
     }
+
+    private class TypeSerializer : EnumWithValueSerializer<Type, Int>(
+        "StatisticType",
+        Int.serializer(),
+        { value },
+        { v -> Type.values().first { it.value == v } }
+    )
 }

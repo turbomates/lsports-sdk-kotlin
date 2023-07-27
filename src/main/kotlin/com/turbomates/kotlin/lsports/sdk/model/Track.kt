@@ -4,13 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Market(
+data class Track(
     @SerialName("Id")
-    val id: Long,
+    val id: String,
     @SerialName("Name")
-    val name: String,
-    @SerialName("MainLine")
-    val mainLine: String? = null,
-    @SerialName("Bets")
-    val bets: List<Bet>
+    val name: String
 )

@@ -3,7 +3,6 @@ package com.turbomates.kotlin.lsports.sdk
 class LSportsConfig {
     lateinit var username: String
     lateinit var password: String
-    lateinit var guid: String
     lateinit var inPlayPackageId: String
     lateinit var preMatchPackageId: String
 
@@ -11,9 +10,10 @@ class LSportsConfig {
     val requestHeartbeat: Int = 580
     val networkRecoveryInterval: Long = 1160
     val isAutomaticRecoveryEnabled: Boolean = true
-    val virtualHost: String = "Customers"
-    val inPlayHost: String = "inplay-rmq.lsports.eu"
-    val preMatchHost: String = "prematch-rmq.lsports.eu"
-    val preMatchUrl: String = "https://prematch.lsports.eu/OddService"
-    val inPlayUrl: String = "https://inplay.lsports.eu/api"
+    val apiUrl: String = "https://stm-api.lsports.eu"
+    val snapshotApiUrl: String = " https://stm-snapshot.lsports.eu"
+    val inPlayVirtualHost: String = "StmInPlay"
+    val preMatchVirtualHost: String = "StmPreMatch"
+    val inPlayHost: String = "stm-inplay.lsports.eu"
+    val preMatchHost: String = "stm-prematch.lsports.eu"
 }

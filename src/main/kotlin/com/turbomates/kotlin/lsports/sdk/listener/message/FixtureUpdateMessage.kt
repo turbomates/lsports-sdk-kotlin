@@ -1,8 +1,11 @@
 package com.turbomates.kotlin.lsports.sdk.listener.message
 
 import com.turbomates.kotlin.lsports.sdk.model.Fixture
+import com.turbomates.kotlin.lsports.sdk.model.Livescore
+import com.turbomates.kotlin.lsports.sdk.model.Market
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class FixtureUpdateMessage(
@@ -22,6 +25,10 @@ data class FixtureUpdateMessage(
         @SerialName("FixtureId")
         val fixtureId: Long,
         @SerialName("Fixture")
-        val fixture: Fixture
+        val fixture: Fixture,
+        @SerialName("Livescore")
+        val livescore: Livescore? = null,
+        @SerialName("Markets")
+        val markets: List<JsonElement>? = null,
     )
 }

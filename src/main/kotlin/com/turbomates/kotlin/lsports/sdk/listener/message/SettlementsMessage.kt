@@ -5,6 +5,7 @@ package com.turbomates.kotlin.lsports.sdk.listener.message
 import com.turbomates.kotlin.lsports.sdk.model.BetSettlement
 import com.turbomates.kotlin.lsports.sdk.model.BetStatus
 import com.turbomates.kotlin.lsports.sdk.model.BetSuspensionReason
+import com.turbomates.kotlin.lsports.sdk.model.Livescore
 import com.turbomates.kotlin.lsports.sdk.model.Market
 import com.turbomates.kotlin.lsports.sdk.serializer.OffsetDateTimeSerializer
 import kotlinx.serialization.SerialName
@@ -30,7 +31,9 @@ data class SettlementsMessage(
         @SerialName("FixtureId")
         val fixtureId: Long,
         @SerialName("Markets")
-        val markets: List<Market<Bet>>
+        val markets: List<Market<Bet>>,
+        @SerialName("Livescore")
+        val livescore: Livescore? = null
     )
 
     @Serializable
@@ -65,6 +68,8 @@ data class SettlementsMessage(
         val probability: Double? = null,
         @SerialName("PlayerName")
         val playerName: String? = null,
+        @SerialName("PlayerId")
+        val playerId: Long? = null,
         @SerialName("SuspensionReason")
         val suspensionReason: BetSuspensionReason? = null,
         @SerialName("Settlement")

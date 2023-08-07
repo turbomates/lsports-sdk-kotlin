@@ -55,44 +55,33 @@ class Consumer(
     }
 
     override fun close() {
-        try {
-            channel.basicCancel(consumerTag)
-        } catch (expected: Exception) {
-            if (expected is UninitializedPropertyAccessException)
-                throw UninitializedPropertyAccessException("Consumer has not been initialized")
-
-            throw expected
-        }
+        channel.basicCancel(consumerTag)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private suspend fun consumeDelivery(delivery: Delivery) {
+        val deliveryTag = delivery.envelope.deliveryTag
+        val deliveryBody = String(delivery.body)
+
         try {
-            val deliveryTag = delivery.envelope.deliveryTag
-            val deliveryBody = String(delivery.body)
-
-            try {
-                println(deliveryBody)
-                Json.decodeFromString(MessageSerializer, deliveryBody).let {
-                    when (it) {
-                        is FixtureUpdateMessage -> handler.handle(it)
-                        is LivescoreUpdateMessage -> handler.handle(it)
-                        is MarketUpdateMessage -> handler.handle(it)
-                        is KeepAliveMessage -> handler.handle(it)
-                        is HeartbeatMessage -> handler.handle(it)
-                        is SettlementsMessage -> handler.handle(it)
-                    }
+            Json.decodeFromString(MessageSerializer, deliveryBody).let {
+                when (it) {
+                    is FixtureUpdateMessage -> handler.handle(it)
+                    is LivescoreUpdateMessage -> handler.handle(it)
+                    is MarketUpdateMessage -> handler.handle(it)
+                    is KeepAliveMessage -> handler.handle(it)
+                    is HeartbeatMessage -> handler.handle(it)
+                    is SettlementsMessage -> handler.handle(it)
                 }
-
-                channel.basicAck(deliveryTag, false)
-            } catch (logging: Throwable) {
-                logger.error("Listener was cancelled $consumerTag. Error: ${logging.message}; Message: $deliveryBody")
-                channel.basicNack(delivery.envelope.deliveryTag, false, true)
             }
-        } catch (expected: Exception) {
-            if (expected is ClosedReceiveChannelException)
-                throw ClosedReceiveChannelException("Cancel exception")
 
-            throw expected
+            channel.basicAck(deliveryTag, false)
+        } catch (ex: MessageSerializer.UnimplementedMessageTypeException) {
+            logger.error("Listener <$consumerTag> ignored message. Error: ${ex.message}; Message: $deliveryBody")
+            channel.basicAck(deliveryTag, false)
+        } catch (logging: Throwable) {
+            logger.error("Listener <$consumerTag> was cancelled. Error: ${logging.message}; Message: $deliveryBody")
+            channel.basicNack(delivery.envelope.deliveryTag, false, true)
         }
     }
 }

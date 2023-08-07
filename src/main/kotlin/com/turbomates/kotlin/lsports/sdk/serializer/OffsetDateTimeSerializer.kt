@@ -25,19 +25,5 @@ object OffsetDateTimeSerializer : KSerializer<OffsetDateTime> {
     @Suppress("MagicNumber")
     override fun deserialize(decoder: Decoder): OffsetDateTime {
         return OffsetDateTime.parse(decoder.decodeString())
-        // val dateTime = decoder.decodeString().let {
-        //     val time = it.replace("Z", "0")
-        //     when (it.length) {
-        //         19 -> "$time.000000"
-        //         26 -> time
-        //         else -> if (time.length > 26) time.dropLast(time.length - 26) else {
-        //             var zeros = ""
-        //             (1..26 - time.length).forEach { _ -> zeros += "0" }
-        //             "$time$zeros"
-        //         }
-        //     }
-        // }
-
-        // return OffsetDateTime.parse(dateTime, dateTimeFormat)
     }
 }

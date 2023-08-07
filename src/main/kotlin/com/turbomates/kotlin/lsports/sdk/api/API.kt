@@ -53,7 +53,6 @@ abstract class API(val config: LSportsConfig, val type: Type) {
         }
 
         val content = response.bodyAsText()
-        println(content)
         if (response.status != HttpStatusCode.OK) throw LSportsClientAPIException("LSports response: ${response.status}, message: $content")
         return json.decodeFromString(content)
     }

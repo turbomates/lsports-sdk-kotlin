@@ -24,9 +24,9 @@ interface Message {
         @SerialName("ServerTimestamp")
         val serverTimestamp: Long,
         @SerialName("MsgSeq")
-        val msgSeq: Long,
+        val msgSeq: Long? = null,
         @SerialName("CreationDate")
-        val creationDate: OffsetDateTime
+        val creationDate: OffsetDateTime? = null
     )
 
     @Serializable(with = TypeSerializer::class)

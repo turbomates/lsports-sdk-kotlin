@@ -67,6 +67,8 @@ data class MarketUpdateMessage(
         val probability: Double? = null,
         @SerialName("PlayerName")
         val playerName: String? = null,
+        @SerialName("PlayerId")
+        val playerId: Long? = null,
         @SerialName("SuspensionReason")
         val suspensionReason: BetSuspensionReason? = null
     )

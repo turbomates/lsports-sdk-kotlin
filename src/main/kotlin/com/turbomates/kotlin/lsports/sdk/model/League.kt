@@ -1,6 +1,12 @@
 package com.turbomates.kotlin.lsports.sdk.model
 
-interface League {
-    val id: Long
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class League(
+    @SerialName("Id")
+    val id: Long,
+    @SerialName("Name")
     val name: String
-}
+)

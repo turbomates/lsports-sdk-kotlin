@@ -12,5 +12,5 @@ data class Livescore(
     @SerialName("Statistics")
     val statistics: List<Statistic>? = null,
     @SerialName("LivescoreExtraData")
-    val livescoreExtraData: ExtraData? = null
+    val livescoreExtraData: List<ExtraData>? = null
 )

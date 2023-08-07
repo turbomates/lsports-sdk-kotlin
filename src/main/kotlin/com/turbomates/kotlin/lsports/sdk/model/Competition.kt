@@ -3,24 +3,18 @@ package com.turbomates.kotlin.lsports.sdk.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-interface Competition {
-    val id: Long
-    val name: String?
-    val type: Type
-    val competitions: List<Competition>?
-    val events: List<Event>?
-
+@Serializable
+data class Competition(
+    @SerialName("Id")
+    val id: Long,
+    @SerialName("Name")
+    val name: String,
+    @SerialName("Type")
+    val type: Int,
+    @SerialName("TrackId")
+    val trackId: Long
+) {
+    // TODO("Add enum type after")
     @Serializable
-    enum class Type(val value: Int) {
-        @SerialName("0")
-        UNKNOWN(0),
-        @SerialName("1")
-        TRACK_NAME(1),
-        @SerialName("2")
-        RACE_NAME(2),
-        @SerialName("3")
-        LEAGUE(3),
-        @SerialName("4")
-        SEASON(4)
-    }
+    enum class Type
 }

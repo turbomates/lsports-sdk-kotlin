@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Market(
+data class Market<T>(
     @SerialName("Id")
     val id: Long,
     @SerialName("Name")
@@ -12,5 +12,5 @@ data class Market(
     @SerialName("MainLine")
     val mainLine: String? = null,
     @SerialName("Bets")
-    val bets: List<Bet>
+    val bets: List<T>
 )

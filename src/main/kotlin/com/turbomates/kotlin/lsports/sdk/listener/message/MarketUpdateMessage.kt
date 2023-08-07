@@ -1,56 +1,38 @@
-@file:UseSerializers(UUIDSerializer::class, OffsetDateTimeSerializer::class)
+@file:UseSerializers(OffsetDateTimeSerializer::class)
 
-package com.turbomates.kotlin.lsports.sdk.api.response
+package com.turbomates.kotlin.lsports.sdk.listener.message
 
-import com.turbomates.kotlin.lsports.sdk.listener.message.Message
-import com.turbomates.kotlin.lsports.sdk.model.BetSettlement
 import com.turbomates.kotlin.lsports.sdk.model.BetStatus
 import com.turbomates.kotlin.lsports.sdk.model.BetSuspensionReason
-import com.turbomates.kotlin.lsports.sdk.model.Fixture
 import com.turbomates.kotlin.lsports.sdk.model.Livescore
 import com.turbomates.kotlin.lsports.sdk.model.Market
 import com.turbomates.kotlin.lsports.sdk.serializer.OffsetDateTimeSerializer
-import com.turbomates.kotlin.lsports.sdk.serializer.UUIDSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import java.io.Serial
 import java.time.OffsetDateTime
-import java.util.UUID
 
 @Serializable
-data class SnapshotResponse(
+data class MarketUpdateMessage(
     @SerialName("Header")
-    override val header: Header
-) : Response {
+    override val header: Message.Header,
     @SerialName("Body")
-    private val _body: List<BodyItem> = listOf()
-
-    override val body: Body
-        get() = Body(_body)
+    val body: Body
+) : Message {
+    @Serializable
+    data class Body(
+        @SerialName("Events")
+        val events: List<Event>
+    )
 
     @Serializable
-    data class Header(
-        @SerialName("Type")
-        val type: Message.Type,
-        @SerialName("MsgGuid")
-        val messageGuid: UUID,
-        @SerialName("ServerTimestamp")
-        val serverTimestamp: Long
-    ) : Response.Header
-
-    data class Body(val items: List<BodyItem>) : Response.Body
-
-    @Serializable
-    data class BodyItem(
+    data class Event(
         @SerialName("FixtureId")
         val fixtureId: Long,
-        @SerialName("Fixture")
-        val fixture: Fixture,
-        @SerialName("Livescore")
-        val livescore: Livescore? = null,
         @SerialName("Markets")
-        val markets: List<Market<Bet>>? = null
+        val markets: List<Market<Bet>>,
+        @SerialName("Livescore")
+        val livescore: Livescore? = null
     )
 
     @Serializable
@@ -60,9 +42,9 @@ data class SnapshotResponse(
         @SerialName("Name")
         val name: String,
         @SerialName("Line")
-        val line: String,
+        val line: String? = null,
         @SerialName("BaseLine")
-        val baseLine: String,
+        val baseLine: String? = null,
         @SerialName("Status")
         val status: BetStatus,
         @SerialName("StartPrice")
@@ -86,8 +68,6 @@ data class SnapshotResponse(
         @SerialName("PlayerName")
         val playerName: String? = null,
         @SerialName("SuspensionReason")
-        val suspensionReason: BetSuspensionReason? = null,
-        @SerialName("Settlement")
-        val settlement: BetSettlement? = null
+        val suspensionReason: BetSuspensionReason? = null
     )
 }

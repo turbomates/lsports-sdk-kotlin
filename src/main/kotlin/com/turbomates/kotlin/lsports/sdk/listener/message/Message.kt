@@ -1,12 +1,33 @@
-package com.turbomates.kotlin.lsports.sdk.api.message
+@file:UseSerializers(UUIDSerializer::class, OffsetDateTimeSerializer::class)
 
-import com.turbomates.kotlin.lsports.sdk._model.Header
+package com.turbomates.kotlin.lsports.sdk.listener.message
+
 import com.turbomates.kotlin.lsports.sdk.serializer.EnumWithValueSerializer
+import com.turbomates.kotlin.lsports.sdk.serializer.OffsetDateTimeSerializer
+import com.turbomates.kotlin.lsports.sdk.serializer.UUIDSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.builtins.serializer
+import java.time.OffsetDateTime
+import java.util.UUID
 
 interface Message {
     val header: Header
+
+    @Serializable
+    data class Header(
+        @SerialName("Type")
+        val type: Type,
+        @SerialName("MsgGuid")
+        val msgGuid: UUID,
+        @SerialName("ServerTimestamp")
+        val serverTimestamp: Long,
+        @SerialName("MsgSeq")
+        val msgSeq: Long,
+        @SerialName("CreationDate")
+        val creationDate: OffsetDateTime
+    )
 
     @Serializable(with = TypeSerializer::class)
     enum class Type(val value: Int) {

@@ -29,7 +29,9 @@ data class Fixture(
     @SerialName("FixtureExtraData")
     val fixtureExtraData: List<ExtraData>? = null,
     @SerialName("ExternalProviderId")
-    val externalProviderId: Long? = null
+    val externalProviderId: Long? = null,
+    @SerialName("Subscription")
+    val subscription: Subscription
 ) {
     @Serializable(with = StatusSerializer::class)
     enum class Status(val value: Int) {

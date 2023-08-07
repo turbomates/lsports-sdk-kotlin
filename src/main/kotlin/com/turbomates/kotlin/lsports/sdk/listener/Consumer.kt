@@ -4,13 +4,12 @@ import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
-import com.turbomates.kotlin.lsports.sdk._model.message.FixtureUpdateMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.HeartbeatMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.KeepAliveMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.LivescoreUpdateMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.MarketUpdateMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.OutrightLeaguesMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.SettlementMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.FixtureUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.HeartbeatMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.KeepAliveMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.LivescoreUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.MarketUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.SettlementsMessage
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,16 +71,16 @@ class Consumer(
             val deliveryBody = String(delivery.body)
 
             try {
-                val message = Json.decodeFromString(MessageSerializer, deliveryBody)
-
-                when (message) {
-                    is FixtureUpdateMessage -> handler.handle(message)
-                    is LivescoreUpdateMessage -> handler.handle(message)
-                    is MarketUpdateMessage -> handler.handle(message)
-                    is KeepAliveMessage -> handler.handle(message)
-                    is HeartbeatMessage -> handler.handle(message)
-                    is SettlementMessage -> handler.handle(message)
-                    is OutrightLeaguesMessage -> handler.handle(message)
+                println(deliveryBody)
+                Json.decodeFromString(MessageSerializer, deliveryBody).let {
+                    when (it) {
+                        is FixtureUpdateMessage -> handler.handle(it)
+                        is LivescoreUpdateMessage -> handler.handle(it)
+                        is MarketUpdateMessage -> handler.handle(it)
+                        is KeepAliveMessage -> handler.handle(it)
+                        is HeartbeatMessage -> handler.handle(it)
+                        is SettlementsMessage -> handler.handle(it)
+                    }
                 }
 
                 channel.basicAck(deliveryTag, false)

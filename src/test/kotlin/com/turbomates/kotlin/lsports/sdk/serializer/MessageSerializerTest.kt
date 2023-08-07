@@ -1,15 +1,15 @@
 package com.turbomates.kotlin.lsports.sdk.serializer
 
-import com.turbomates.kotlin.lsports.sdk._model.Bet
-import com.turbomates.kotlin.lsports.sdk.api.message.Message
+import com.turbomates.kotlin.lsports.sdk.listener.message.FixtureUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.HeartbeatMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.KeepAliveMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.LivescoreUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.MarketUpdateMessage
+import com.turbomates.kotlin.lsports.sdk.listener.message.Message
+import com.turbomates.kotlin.lsports.sdk.listener.message.SettlementsMessage
+import com.turbomates.kotlin.lsports.sdk.model.BetSettlement
+import com.turbomates.kotlin.lsports.sdk.model.Fixture
 import com.turbomates.kotlin.lsports.sdk.model.Scoreboard
-import com.turbomates.kotlin.lsports.sdk._model.message.FixtureUpdateMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.HeartbeatMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.KeepAliveMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.LivescoreUpdateMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.MarketUpdateMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.OutrightLeaguesMessage
-import com.turbomates.kotlin.lsports.sdk._model.message.SettlementMessage
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -42,7 +42,7 @@ class MessageSerializerTest {
         assertEquals(Message.Type.LIVESCORE_UPDATE, livescoreUpdateMessage.header.type)
         assertEquals(UUID.fromString("0ba4f08c-4190-4a18-b6b7-c3088bbd7aa0"), livescoreUpdateMessage.header.msgGuid)
         assertEquals(8067540, livescoreUpdateMessage.body.events.first().fixtureId)
-        assertEquals(Scoreboard.Status.FINISHED, livescoreUpdateMessage.body.events.first().livescore.scoreboard.status)
+        assertEquals(Fixture.Status.FINISHED, livescoreUpdateMessage.body.events.first().livescore.scoreboard.status)
     }
 
     @Test
@@ -58,7 +58,7 @@ class MessageSerializerTest {
         assertEquals(8061863, marketUpdateMessage.body.events.first().fixtureId)
         assertEquals(
             2.15,
-            marketUpdateMessage.body.events.first().markets.first().providers.first().bets.first().startPrice
+            marketUpdateMessage.body.events.first().markets.first().bets.first().startPrice
         )
     }
 
@@ -74,7 +74,7 @@ class MessageSerializerTest {
         assertEquals(8090226, marketUpdateMessage.body.events.first().fixtureId)
         assertEquals(
             13.0,
-            marketUpdateMessage.body.events.first().markets.first().providers.first().bets.first().startPrice
+            marketUpdateMessage.body.events.first().markets.first().bets.first().startPrice
         )
     }
 
@@ -88,7 +88,7 @@ class MessageSerializerTest {
         val keepAliveMessage = message as KeepAliveMessage
         assertEquals(Message.Type.KEEP_ALIVE, keepAliveMessage.header.type)
         assertEquals(UUID.fromString("37a4cf5a-19a9-455c-b750-c408570fbcb9"), keepAliveMessage.header.msgGuid)
-        assertEquals(8066615, message.body.keepAlive.activeEvents.first())
+        assertEquals(8066615, message.body.keepAlive.activeEvent.first())
     }
 
     @Test
@@ -109,38 +109,14 @@ class MessageSerializerTest {
             "{\"Header\":{\"Type\":35,\"MsgId\":1,\"MsgGuid\":\"ca4da570-a87d-4e06-9d68-770b229a2df4\",\"ServerTimestamp\":1641989955},\"Body\":{\"Events\":[{\"FixtureId\":8066430,\"Livescore\":null,\"Markets\":[{\"Id\":9,\"Name\":\"Correct Score 1st Period\",\"Providers\":[{\"Id\":145,\"Name\":\"1XBet\",\"LastUpdate\":\"2022-01-12T12:19:15.8408925Z\",\"Bets\":[{\"Id\":13604693718066430,\"Name\":\"6-2\",\"Status\":3,\"StartPrice\":\"6.0\",\"Price\":\"5.5\",\"Settlement\":1,\"LastUpdate\":\"2022-01-12T12:19:15.837427Z\"}]}]}]}]}}\n"
         val message = Json.decodeFromString(MessageSerializer, incomeData)
 
-        Assertions.assertTrue(message is SettlementMessage)
-        val settlementMessage = message as SettlementMessage
+        Assertions.assertTrue(message is SettlementsMessage)
+        val settlementMessage = message as SettlementsMessage
         assertEquals(Message.Type.SETTLEMENTS, settlementMessage.header.type)
         assertEquals(UUID.fromString("ca4da570-a87d-4e06-9d68-770b229a2df4"), settlementMessage.header.msgGuid)
         assertEquals(8066430, settlementMessage.body.events.first().fixtureId)
         assertEquals(
-            Bet.Settlement.LOSER,
-            settlementMessage.body.events.first().markets.first().providers.first().bets.first().settlement
+            BetSettlement.LOSER,
+            settlementMessage.body.events.first().markets.first().bets.first().settlement
         )
-    }
-
-    @Test
-    fun `outright leagues message deserialization`() {
-        val incomeData =
-            "{\"Header\":{\"Type\":38,\"MsgId\":10,\"MsgGuid\":\"c64c8f2b-de0b-412b-a927-423f1fc3384b\",\"ServerTimestamp\":1644313411},\"Body\":{\"Competition\":{\"Id\":40567,\"Name\":\"ATP Rome\",\"Type\":3,\"Competitions\":[{\"Id\":2021,\"Name\":\"2021\",\"Type\":4,\"Events\":[{\"FixtureId\":6936388,\"Livescore\":null,\"Markets\":null,\"OutrightLeague\":{\"Sport\":{\"Id\":54094,\"Name\":\"Tennis\"},\"Location\":{\"Id\":215,\"Name\":\"Italy\"},\"LastUpdate\":\"2021-09-13T17:22:30.489242\",\"Status\":3}}]}]}}}"
-        val message = Json.decodeFromString(MessageSerializer, incomeData)
-
-        Assertions.assertTrue(message is OutrightLeaguesMessage)
-        val outrightLeaguesMessage = message as OutrightLeaguesMessage
-        assertEquals(Message.Type.OUTRIGHT_LEAGUES, outrightLeaguesMessage.header.type)
-        assertEquals(UUID.fromString("c64c8f2b-de0b-412b-a927-423f1fc3384b"), outrightLeaguesMessage.header.msgGuid)
-        assertEquals(6936388, outrightLeaguesMessage.body.competition.competitions!!.first().events!!.first().fixtureId)
-    }
-
-    @Test
-    fun `outright leagues bad message deserialization`() {
-        val incomeData = "{\"Header\":{\"Type\":38,\"MsgId\":28,\"MsgGuid\":\"74ce0625-a3bc-41d4-9a6b-a4159eb36200\",\"ServerTimestamp\":1644412183},\"Body\":{\"Competition\":{\"Id\":0,\"Name\":null,\"Type\":0}}}"
-        val message = Json.decodeFromString(MessageSerializer, incomeData)
-
-        Assertions.assertTrue(message is OutrightLeaguesMessage)
-        val outrightLeaguesMessage = message as OutrightLeaguesMessage
-        assertEquals(Message.Type.OUTRIGHT_LEAGUES, outrightLeaguesMessage.header.type)
-        assertEquals(UUID.fromString("74ce0625-a3bc-41d4-9a6b-a4159eb36200"), outrightLeaguesMessage.header.msgGuid)
     }
 }

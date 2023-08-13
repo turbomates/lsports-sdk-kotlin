@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.github.turbomates"
-version = "0.2.1"
+version = "0.2.2"
 
 repositories {
     mavenCentral()
@@ -31,7 +31,7 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "15"
+        jvmTarget = "17"
         freeCompilerArgs = listOf(
             "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
         )
@@ -39,7 +39,7 @@ tasks.withType<KotlinCompile> {
 }
 
 configure<JavaPluginExtension> {
-    sourceCompatibility = JavaVersion.VERSION_15
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType<Test> {

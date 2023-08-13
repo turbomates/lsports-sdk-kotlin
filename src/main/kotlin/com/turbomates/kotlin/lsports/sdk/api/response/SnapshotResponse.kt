@@ -14,7 +14,6 @@ import com.turbomates.kotlin.lsports.sdk.serializer.UUIDSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import java.io.Serial
 import java.time.OffsetDateTime
 import java.util.UUID
 

@@ -10,11 +10,12 @@ plugins {
     signing
 }
 
-group = "com.turbomates"
-version = "0.2.0"
+group = "com.github.turbomates"
+version = "0.2.1"
 
 repositories {
     mavenCentral()
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -72,6 +73,8 @@ tasks.withType<Detekt>().configureEach {
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withJavadocJar()
     withSourcesJar()
 }
@@ -79,67 +82,7 @@ java {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            artifactId = "kotlin-lsports-sdk"
-            groupId = "com.turbomates"
             from(components["java"])
-            pom {
-                packaging = "jar"
-                name.set("Kotlin LSports SDK")
-                url.set("https://github.com/turbomates/lsports-sdk-kotlin")
-                description.set("This library is a client that describes sport line delivery from LSports service")
-
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:https://github.com/turbomates/lsports-sdk-kotlin.git")
-                    developerConnection.set("scm:git@github.com:turbomates/lsports-sdk-kotlin.git")
-                    url.set("https://github.com/turbomates/lsports-sdk-kotlin")
-                }
-
-                developers {
-                    developer {
-                        id.set("vesurbag")
-                        name.set("Sergey Grabrusev")
-                        email.set("gabrusevs@gmail.com")
-                    }
-                    developer {
-                        id.set("AndreiBaly")
-                        name.set("Andrew Krawchenko")
-                        email.set("andrei.krawchenko@gmail.com")
-                    }
-                    developer {
-                        id.set("JinKoro")
-                        name.set("Dmitry Korotin")
-                        email.set("dskorotin@gmail.com")
-                    }
-                }
-            }
         }
     }
-    repositories {
-        maven {
-            val releasesUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsUrl else releasesUrl
-            credentials {
-                username = project.properties["ossrhUsername"].toString()
-                password = project.properties["ossrhPassword"].toString()
-            }
-        }
-    }
-}
-
-signing {
-    sign(publishing.publications["mavenJava"])
-}
-
-nexusStaging {
-    serverUrl = "https://s01.oss.sonatype.org/service/local/"
-    username = project.properties["ossrhUsername"].toString()
-    password = project.properties["ossrhPassword"].toString()
 }

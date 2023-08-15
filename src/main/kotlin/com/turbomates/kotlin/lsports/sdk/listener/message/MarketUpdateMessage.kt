@@ -2,7 +2,7 @@
 
 package com.turbomates.kotlin.lsports.sdk.listener.message
 
-import com.turbomates.kotlin.lsports.sdk.model.BetStatus
+import com.turbomates.kotlin.lsports.sdk.model.Bet.Status
 import com.turbomates.kotlin.lsports.sdk.model.BetSuspensionReason
 import com.turbomates.kotlin.lsports.sdk.model.Livescore
 import com.turbomates.kotlin.lsports.sdk.model.Market
@@ -38,19 +38,19 @@ data class MarketUpdateMessage(
     @Serializable
     data class Bet(
         @SerialName("Id")
-        val id: Long,
+        override val id: Long,
         @SerialName("Name")
-        val name: String,
+        override val name: String,
         @SerialName("Line")
         val line: String? = null,
         @SerialName("BaseLine")
         val baseLine: String? = null,
         @SerialName("Status")
-        val status: BetStatus,
+        override val status: Status,
         @SerialName("StartPrice")
-        val startPrice: Double,
+        override val startPrice: Double,
         @SerialName("Price")
-        val price: Double,
+        override val price: Double,
         @SerialName("LayPrice")
         val layPrice: Double? = null,
         @SerialName("PriceVolume")
@@ -71,5 +71,5 @@ data class MarketUpdateMessage(
         val playerId: Long? = null,
         @SerialName("SuspensionReason")
         val suspensionReason: BetSuspensionReason? = null
-    )
+    ) : com.turbomates.kotlin.lsports.sdk.model.Bet
 }

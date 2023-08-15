@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Market<T>(
+data class Market<T : Bet>(
     @SerialName("Id")
     val id: Long,
     @SerialName("Name")

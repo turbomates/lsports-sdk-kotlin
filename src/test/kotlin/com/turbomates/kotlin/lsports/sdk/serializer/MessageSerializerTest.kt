@@ -7,9 +7,8 @@ import com.turbomates.kotlin.lsports.sdk.listener.message.LivescoreUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.listener.message.MarketUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.listener.message.Message
 import com.turbomates.kotlin.lsports.sdk.listener.message.SettlementsMessage
-import com.turbomates.kotlin.lsports.sdk.model.BetSettlement
+import com.turbomates.kotlin.lsports.sdk.model.Bet
 import com.turbomates.kotlin.lsports.sdk.model.Fixture
-import com.turbomates.kotlin.lsports.sdk.model.Scoreboard
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -99,7 +98,7 @@ class MessageSerializerTest {
         assertEquals(UUID.fromString("0e7fcfbe-798f-487b-9fca-274c05f18f88"), settlementMessage.header.msgGuid)
         assertEquals(11092776, settlementMessage.body.events.first().fixtureId)
         assertEquals(
-            BetSettlement.LOSER,
+            Bet.Settlement.LOSER,
             settlementMessage.body.events.first().markets.first().bets.first().settlement
         )
     }

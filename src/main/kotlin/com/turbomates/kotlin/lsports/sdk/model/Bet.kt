@@ -10,6 +10,12 @@ interface Bet {
     val status: Status
     val price: Double
     val startPrice: Double
+    val layPrice: Double?
+    val priceVolume: Double?
+    val layPriceVolume: Double?
+    val line: String?
+    val baseLine: String?
+    val providerBetId: String?
 
     @Serializable(with = StatusSerializer::class)
     enum class Status(val value: Int) {

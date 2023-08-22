@@ -59,9 +59,9 @@ data class SnapshotResponse(
         @SerialName("Name")
         override val name: String,
         @SerialName("Line")
-        val line: String,
+        override val line: String,
         @SerialName("BaseLine")
-        val baseLine: String,
+        override val baseLine: String,
         @SerialName("Status")
         override val status: Status,
         @SerialName("StartPrice")
@@ -69,13 +69,13 @@ data class SnapshotResponse(
         @SerialName("Price")
         override val price: Double,
         @SerialName("LayPrice")
-        val layPrice: Double? = null,
+        override val layPrice: Double? = null,
         @SerialName("PriceVolume")
-        val priceVolume: Double? = null,
+        override val priceVolume: Double? = null,
         @SerialName("LayPriceVolume")
-        val layPriceVolume: Double? = null,
+        override val layPriceVolume: Double? = null,
         @SerialName("ProviderBetId")
-        val providerBetId: String? = null,
+        override val providerBetId: String? = null,
         @SerialName("LastUpdate")
         val lastUpdate: OffsetDateTime,
         @SerialName("ParticipantId")

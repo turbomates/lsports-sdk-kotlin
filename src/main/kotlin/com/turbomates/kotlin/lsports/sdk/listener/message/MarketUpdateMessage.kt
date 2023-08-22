@@ -42,9 +42,9 @@ data class MarketUpdateMessage(
         @SerialName("Name")
         override val name: String,
         @SerialName("Line")
-        val line: String? = null,
+        override val line: String? = null,
         @SerialName("BaseLine")
-        val baseLine: String? = null,
+        override val baseLine: String? = null,
         @SerialName("Status")
         override val status: Status,
         @SerialName("StartPrice")
@@ -52,13 +52,13 @@ data class MarketUpdateMessage(
         @SerialName("Price")
         override val price: Double,
         @SerialName("LayPrice")
-        val layPrice: Double? = null,
+        override val layPrice: Double? = null,
         @SerialName("PriceVolume")
-        val priceVolume: Double? = null,
+        override val priceVolume: Double? = null,
         @SerialName("LayPriceVolume")
-        val layPriceVolume: Double? = null,
+        override val layPriceVolume: Double? = null,
         @SerialName("ProviderBetId")
-        val providerBetId: String? = null,
+        override val providerBetId: String? = null,
         @SerialName("LastUpdate")
         val lastUpdate: OffsetDateTime,
         @SerialName("ParticipantId")

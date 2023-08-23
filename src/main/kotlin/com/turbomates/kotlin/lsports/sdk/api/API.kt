@@ -19,6 +19,7 @@ import com.turbomates.kotlin.lsports.sdk.api.response.TranslationResponse
 import com.turbomates.kotlin.lsports.sdk.model.Language
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
@@ -30,7 +31,11 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 abstract class API(val config: LSportsConfig, val type: Type) {
-    protected val client = HttpClient(CIO)
+    protected val client = HttpClient(CIO) {
+        install(HttpTimeout) {
+            requestTimeoutMillis = config.apiRequestTimeoutMillis
+        }
+    }
     protected val json = Json {
         prettyPrint = false
         encodeDefaults = true

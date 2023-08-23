@@ -6,6 +6,7 @@ class LSportsConfig {
     lateinit var inPlayPackageId: String
     lateinit var preMatchPackageId: String
 
+    var apiRequestTimeoutMillis = 60L * 1000L
     val port: Int = 5672
     val requestHeartbeat: Int = 580
     val networkRecoveryInterval: Long = 1160

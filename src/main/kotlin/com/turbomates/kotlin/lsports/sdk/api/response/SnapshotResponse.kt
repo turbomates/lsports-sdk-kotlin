@@ -59,9 +59,9 @@ data class SnapshotResponse(
         @SerialName("Name")
         override val name: String,
         @SerialName("Line")
-        override val line: String,
+        override val line: String? = null,
         @SerialName("BaseLine")
-        override val baseLine: String,
+        override val baseLine: String? = null,
         @SerialName("Status")
         override val status: Status,
         @SerialName("StartPrice")

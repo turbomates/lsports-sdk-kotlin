@@ -19,7 +19,7 @@ object OffsetDateTimeSerializer : KSerializer<OffsetDateTime> {
 
     @Suppress("MagicNumber")
     override fun deserialize(decoder: Decoder): OffsetDateTime {
-        val strDateTime = decoder.decodeString().let { if (it.length == 19) "${it}Z" else it }
+        val strDateTime = decoder.decodeString().let { if (!it.contains('Z')) "${it}Z" else it }
         return OffsetDateTime.parse(strDateTime)
     }
 }

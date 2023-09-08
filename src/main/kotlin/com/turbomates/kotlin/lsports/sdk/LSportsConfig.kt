@@ -7,10 +7,10 @@ class LSportsConfig {
     lateinit var preMatchPackageId: String
 
     var apiRequestTimeoutMillis = 60L * 1000L
+    var requestHeartbeat: Int = 580
+    var isAutomaticRecoveryEnabled: Boolean = true
+    var networkRecoveryInterval: Long = 1160
     val port: Int = 5672
-    val requestHeartbeat: Int = 580
-    val networkRecoveryInterval: Long = 1160
-    val isAutomaticRecoveryEnabled: Boolean = true
     val apiUrl: String = "https://stm-api.lsports.eu"
     val snapshotApiUrl: String = " https://stm-snapshot.lsports.eu"
     val inPlayVirtualHost: String = "StmInPlay"

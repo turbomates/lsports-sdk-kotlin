@@ -82,6 +82,7 @@ class Consumer(
         } catch (logging: Throwable) {
             logger.error("Listener <$consumerTag> was cancelled. Error: ${logging.message}; Message: $deliveryBody")
             channel.basicNack(delivery.envelope.deliveryTag, false, true)
+            throw logging
         }
     }
 }
@@ -95,6 +96,7 @@ private class DeliverCallbackListener(
             deliveriesFlow.tryEmit(delivery)
         } catch (expected: ClosedSendChannelException) {
             logger.debug("Can't receive a message. Consumer $consumerTag has been cancelled")
+            throw expected
         }
     }
 }
@@ -102,6 +104,10 @@ private class DeliverCallbackListener(
 private class CancelCallbackListener(private val logger: Logger) :
     CancelCallback {
     override fun handle(consumerTag: String?) {
-        logger.error("Listener was cancelled $consumerTag")
+        val message = "Listener was cancelled $consumerTag"
+        logger.error(message)
+        throw CancelCallbackListenerException(message)
     }
+
+    private class CancelCallbackListenerException(message: String) : Exception(message)
 }

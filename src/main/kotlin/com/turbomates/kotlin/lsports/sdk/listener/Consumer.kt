@@ -42,7 +42,6 @@ class Consumer(
         )
 
         for (delivery in queue) {
-            println(queue.iterator())
             consumeDelivery(delivery)
         }
     }

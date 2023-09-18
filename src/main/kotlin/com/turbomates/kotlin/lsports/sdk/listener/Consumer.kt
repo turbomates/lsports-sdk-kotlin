@@ -13,10 +13,8 @@ import com.turbomates.kotlin.lsports.sdk.listener.message.SettlementsMessage
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedSendChannelException
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -24,38 +22,35 @@ import java.io.Closeable
 
 class Consumer(
     private val handler: Handler,
-    connection: Connection,
-    private val queue: String,
+    private val connection: Connection,
+    private val queueName: String,
     private val prefetchSize: Int
-) : Closeable {
-
+) : Closeable, CoroutineScope by CoroutineScope(Dispatchers.IO) {
     private val logger = LoggerFactory.getLogger(javaClass)
-
+    private val queue = Channel<Delivery>(Channel.UNLIMITED)
     private val channel = connection.createChannel().apply {
         basicQos(prefetchSize, false)
     }
-
-    private var deliveriesFlow: MutableSharedFlow<Delivery> = MutableSharedFlow(
-        extraBufferCapacity = prefetchSize,
-        onBufferOverflow = BufferOverflow.SUSPEND
-    )
 
     private lateinit var consumerTag: String
 
     suspend fun consume() {
         consumerTag = channel.basicConsume(
-            queue, false,
-            DeliverCallbackListener(deliveriesFlow, logger),
-            CancelCallbackListener(logger)
+            queueName, false,
+            DeliverCallbackListener(queue, this, logger),
+            CancelCallbackListener(this, logger)
         )
 
-        deliveriesFlow.collect {
-            consumeDelivery(it)
+        for (delivery in queue) {
+            println(queue.iterator())
+            consumeDelivery(delivery)
         }
     }
 
     override fun close() {
         channel.basicCancel(consumerTag)
+        connection.close()
+        queue.close()
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -88,24 +83,29 @@ class Consumer(
 }
 
 private class DeliverCallbackListener(
-    val deliveriesFlow: MutableSharedFlow<Delivery>,
+    private val queue: Channel<Delivery>,
+    private val consumer: Consumer,
     private val logger: Logger
 ) : CoroutineScope by CoroutineScope(Dispatchers.IO), DeliverCallback {
     override fun handle(consumerTag: String?, delivery: Delivery) {
         try {
-            deliveriesFlow.tryEmit(delivery)
+            queue.trySend(delivery)
         } catch (expected: ClosedSendChannelException) {
             logger.debug("Can't receive a message. Consumer $consumerTag has been cancelled")
+            consumer.close()
             throw expected
         }
     }
 }
 
-private class CancelCallbackListener(private val logger: Logger) :
-    CancelCallback {
+private class CancelCallbackListener(
+    private val consumer: Consumer,
+    private val logger: Logger
+) : CancelCallback {
     override fun handle(consumerTag: String?) {
         val message = "Listener was cancelled $consumerTag"
         logger.error(message)
+        consumer.close()
         throw CancelCallbackListenerException(message)
     }
 

@@ -64,14 +64,14 @@ class MessageSerializerTest {
     @Test
     fun `keep alive message deserialization`() {
         val incomeData =
-            "{\"Header\":{\"Type\":31,\"MsgGuid\":\"37a4cf5a-19a9-455c-b750-c408570fbcb9\",\"ServerTimestamp\":1642074018},\"Body\":{\"KeepAlive\":{\"ActiveEvent\":[8066615,8067007,8068049,8068502,8070309,8070443,8070487,8070593,8071084,8061953]}}}"
+            "{\"Header\":{\"Type\":31,\"MsgGuid\":\"37a4cf5a-19a9-455c-b750-c408570fbcb9\",\"ServerTimestamp\":1642074018},\"Body\":{\"KeepAlive\":{\"ActiveEvents\":[8066615,8067007,8068049,8068502,8070309,8070443,8070487,8070593,8071084,8061953]}}}"
         val message = Json.decodeFromString(MessageSerializer, incomeData)
 
         Assertions.assertTrue(message is KeepAliveMessage)
         val keepAliveMessage = message as KeepAliveMessage
         assertEquals(Message.Type.KEEP_ALIVE, keepAliveMessage.header.type)
         assertEquals(UUID.fromString("37a4cf5a-19a9-455c-b750-c408570fbcb9"), keepAliveMessage.header.msgGuid)
-        assertEquals(8066615, message.body.keepAlive.activeEvent.first())
+        assertEquals(8066615, message.body.keepAlive.activeEvents.first())
     }
 
     @Test

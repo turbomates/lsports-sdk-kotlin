@@ -1,5 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.listener.message
 
+import com.turbomates.kotlin.lsports.sdk.model.ExtraData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,7 +19,9 @@ data class KeepAliveMessage(
 
     @Serializable
     data class KeepAlive(
-        @SerialName("ActiveEvent")
-        val activeEvent: List<Long>
+        @SerialName("ActiveEvents")
+        val activeEvents: List<Long>,
+        @SerialName("ExtraData")
+        val extraData: List<ExtraData>? = null
     )
 }

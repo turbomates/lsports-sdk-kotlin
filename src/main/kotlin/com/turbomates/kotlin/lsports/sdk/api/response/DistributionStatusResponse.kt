@@ -15,7 +15,7 @@ data class DistributionStatusResponse(
         @SerialName("IsDistributionOn")
         val isDistributionOn: Boolean,
         @SerialName("Consumers")
-        val consumers: List<String>,
+        val consumers: List<String>? = null,
         @SerialName("NumberMessagesInQueue")
         val numberMessagesInQueue: Double,
         @SerialName("MessagesPerSecond")

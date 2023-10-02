@@ -13,6 +13,7 @@ import com.turbomates.kotlin.lsports.sdk.listener.message.SettlementsMessage
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.serialization.json.Json
@@ -34,6 +35,7 @@ class Consumer(
 
     private lateinit var consumerTag: String
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun consume() {
         consumerTag = channel.basicConsume(
             queueName, false,
@@ -42,20 +44,21 @@ class Consumer(
         )
 
         for (delivery in queue) {
+            if (queue.isClosedForSend) break
             consumeDelivery(delivery)
         }
     }
 
     override fun close() {
-        try {
-            channel.basicCancel(consumerTag)
-        } finally {
-            try {
-                connection.close()
-            } finally {
-                queue.close()
-            }
+        if (channel.isOpen) {
+            channel.close()
         }
+
+        if (connection.isOpen) {
+            connection.close()
+        }
+
+        queue.close()
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -75,13 +78,19 @@ class Consumer(
                 }
             }
 
-            channel.basicAck(deliveryTag, false)
+            if (channel.isOpen) {
+                channel.basicAck(deliveryTag, false)
+            }
         } catch (ex: MessageSerializer.UnimplementedMessageTypeException) {
             logger.error("Listener <$consumerTag> ignored message. Error: ${ex.message}; Message: $deliveryBody")
-            channel.basicAck(deliveryTag, false)
+            if (channel.isOpen) {
+                channel.basicAck(deliveryTag, false)
+            }
         } catch (logging: Throwable) {
             logger.error("Listener <$consumerTag> was cancelled. Error: ${logging.message}; Message: $deliveryBody")
-            channel.basicNack(delivery.envelope.deliveryTag, false, true)
+            if (channel.isOpen) {
+                channel.basicNack(delivery.envelope.deliveryTag, false, true)
+            }
             throw logging
         }
     }

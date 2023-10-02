@@ -47,9 +47,15 @@ class Consumer(
     }
 
     override fun close() {
-        channel.basicCancel(consumerTag)
-        connection.close()
-        queue.close()
+        try {
+            channel.basicCancel(consumerTag)
+        } finally {
+            try {
+                connection.close()
+            } finally {
+                queue.close()
+            }
+        }
     }
 
     @Suppress("TooGenericExceptionCaught")

@@ -50,15 +50,19 @@ class Consumer(
     }
 
     override fun close() {
-        if (channel.isOpen) {
-            channel.close()
+        try {
+            if (channel.isOpen) {
+                channel.close()
+            }
+        } finally {
+            try {
+                if (connection.isOpen) {
+                    connection.close()
+                }
+            } finally {
+                queue.close()
+            }
         }
-
-        if (connection.isOpen) {
-            connection.close()
-        }
-
-        queue.close()
     }
 
     @Suppress("TooGenericExceptionCaught")

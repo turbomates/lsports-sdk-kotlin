@@ -20,25 +20,25 @@ data class LivescoreUpdateMessage(
     @SerialName("Header")
     override val header: Message.Header,
     @SerialName("Body")
-    val body: Body
-) : Message {
+    override val body: Body
+) : EventsMessage {
     @Serializable
     data class Body(
         @SerialName("Events")
-        val events: List<Event>
-    )
+        override val events: List<Event>
+    ) : EventsMessage.Body
 
     @Serializable
     data class Event(
         @SerialName("FixtureId")
-        val fixtureId: Long,
+        override val fixtureId: Long,
         @SerialName("Fixture")
         val fixture: Fixture,
         @SerialName("Livescore")
         val livescore: Livescore,
         @SerialName("Markets")
         val markets: List<JsonElement>? = null
-    )
+    ) : com.turbomates.kotlin.lsports.sdk.model.Event
 
     @Serializable
     data class Fixture(

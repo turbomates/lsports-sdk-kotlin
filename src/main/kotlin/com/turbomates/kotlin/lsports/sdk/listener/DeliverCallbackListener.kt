@@ -42,7 +42,7 @@ internal class DeliverCallbackListener(
                     is KeepAliveMessage -> async(message, deliveryTag)
                     is HeartbeatMessage -> async(message, deliveryTag)
                     else -> throw MessageSerializer.UnimplementedMessageTypeException(
-                        Message.Type.values().first { it.value == message.header.type.value }
+                        Message.Type.entries.first { it.value == message.header.type.value }
                     )
                 }
             }
@@ -75,7 +75,7 @@ internal class DeliverCallbackListener(
         is KeepAliveMessage -> handler.handle(message)
         is HeartbeatMessage -> handler.handle(message)
         else -> throw MessageSerializer.UnimplementedMessageTypeException(
-            Message.Type.values().first { it.value == message.header.type.value }
+            Message.Type.entries.first { it.value == message.header.type.value }
         )
     }
 

@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory
 object MessageSerializer : JsonContentPolymorphicSerializer<Message>(Message::class) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<out Message> {
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Message> {
         val typeValue = element.jsonObject["Header"]?.jsonObject?.get("Type")?.jsonPrimitive?.content?.toInt()
             ?: error("Message must contains Type value")
 
@@ -31,8 +31,8 @@ object MessageSerializer : JsonContentPolymorphicSerializer<Message>(Message::cl
             Message.Type.HEARTBEAT.value -> HeartbeatMessage.serializer()
             else -> {
                 logger.error("MessageSerializer error with message data: $element")
-                if (Message.Type.values().map { it.value }.contains(typeValue)) {
-                    throw UnimplementedMessageTypeException(Message.Type.values().first { it.value == typeValue })
+                if (Message.Type.entries.map { it.value }.contains(typeValue)) {
+                    throw UnimplementedMessageTypeException(Message.Type.entries.first { it.value == typeValue })
                 } else {
                     throw UnsupportedMessageTypeException(typeValue)
                 }

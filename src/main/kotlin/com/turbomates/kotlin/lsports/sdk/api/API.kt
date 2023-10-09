@@ -104,7 +104,7 @@ abstract class API(val config: LSportsConfig, val type: Type) {
         request("${config.apiUrl}/Outright/GetAllTracks")
 
     suspend fun snapshot(
-        action: InPlayAPI.SnapshotAction,
+        action: SnapshotAction,
         requestBlock: SnapshotRequest.() -> Unit = {}
     ): SnapshotResponse =
         snapshotRequest(SnapshotRequest().apply(requestBlock), action)

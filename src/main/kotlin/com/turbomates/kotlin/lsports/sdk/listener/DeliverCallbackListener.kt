@@ -26,7 +26,8 @@ internal class DeliverCallbackListener(
     context: String,
     dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : CoroutineScope by CoroutineScope(dispatcher), DeliverCallback {
-    private val logger = LoggerFactory.getLogger(DeliverCallbackListener::class.java.packageName + ".$context")
+    //TODO: temporary fix for jitpack io kotlin version
+    private val logger = LoggerFactory.getLogger("com.turbomates.kotlin.lsports.sdk.listener.$context")
     override fun handle(consumerTag: String?, delivery: Delivery) {
         val deliveryTag = delivery.envelope.deliveryTag
         val deliveryBody = String(delivery.body)

@@ -5,8 +5,6 @@ import com.turbomates.kotlin.lsports.sdk.api.request.SnapshotRequest
 import com.turbomates.kotlin.lsports.sdk.api.response.SnapshotResponse
 
 class PreMatchAPI(config: LSportsConfig) : API(config, Type.PRE_MATCH) {
-    suspend fun snapshot(action: SnapshotAction, requestBlock: SnapshotRequest.() -> Unit = {}): SnapshotResponse =
-        snapshotRequest(SnapshotRequest().apply(requestBlock), action)
 
     enum class SnapshotAction(override val value: String) : API.SnapshotAction {
         GET_EVENTS("GetEvents"),

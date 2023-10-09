@@ -8,8 +8,6 @@ import com.turbomates.kotlin.lsports.sdk.api.response.ScheduleResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.SnapshotResponse
 
 class InPlayAPI(config: LSportsConfig) : API(config, Type.IN_PLAY) {
-    suspend fun snapshot(action: SnapshotAction, requestBlock: SnapshotRequest.() -> Unit = {}): SnapshotResponse =
-        snapshotRequest(SnapshotRequest().apply(requestBlock), action)
 
     suspend fun packageQuota(): QuotaResponse =
         request("${config.apiUrl}/Package/GetPackageQuota")

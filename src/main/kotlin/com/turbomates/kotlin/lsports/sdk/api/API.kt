@@ -5,6 +5,7 @@ import com.turbomates.kotlin.lsports.sdk.api.request.CompetitionsRequest
 import com.turbomates.kotlin.lsports.sdk.api.request.LeaguesRequest
 import com.turbomates.kotlin.lsports.sdk.api.request.MarketsRequest
 import com.turbomates.kotlin.lsports.sdk.api.request.Request
+import com.turbomates.kotlin.lsports.sdk.api.request.SnapshotRequest
 import com.turbomates.kotlin.lsports.sdk.api.request.TranslationRequest
 import com.turbomates.kotlin.lsports.sdk.api.response.CompetitionsResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.DistributionResponse
@@ -13,6 +14,7 @@ import com.turbomates.kotlin.lsports.sdk.api.response.LeaguesResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.LocationsResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.MarketsResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.Response
+import com.turbomates.kotlin.lsports.sdk.api.response.SnapshotResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.SportsResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.TracksResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.TranslationResponse
@@ -62,7 +64,10 @@ abstract class API(val config: LSportsConfig, val type: Type) {
         return json.decodeFromString(content)
     }
 
-    protected suspend inline fun <reified T : Response, reified U : Request> snapshotRequest(request: U, action: SnapshotAction): T =
+    protected suspend inline fun <reified T : Response, reified U : Request> snapshotRequest(
+        request: U,
+        action: SnapshotAction
+    ): T =
         request("${config.snapshotApiUrl}/${type.value}/${action.value}", request)
 
     suspend fun distributionStart(): DistributionResponse =
@@ -74,7 +79,10 @@ abstract class API(val config: LSportsConfig, val type: Type) {
     suspend fun distributionStatus(): DistributionStatusResponse =
         request("${config.apiUrl}/Package/GetDistributionStatus")
 
-    suspend fun translations(languages: List<Language>, requestBlock: TranslationRequest.() -> Unit = {}): TranslationResponse =
+    suspend fun translations(
+        languages: List<Language>,
+        requestBlock: TranslationRequest.() -> Unit = {}
+    ): TranslationResponse =
         request("${config.apiUrl}/Translation/Get", TranslationRequest(languages).apply(requestBlock))
 
     suspend fun sports(): SportsResponse =
@@ -94,6 +102,12 @@ abstract class API(val config: LSportsConfig, val type: Type) {
 
     suspend fun outrightTracks(): TracksResponse =
         request("${config.apiUrl}/Outright/GetAllTracks")
+
+    suspend fun snapshot(
+        action: InPlayAPI.SnapshotAction,
+        requestBlock: SnapshotRequest.() -> Unit = {}
+    ): SnapshotResponse =
+        snapshotRequest(SnapshotRequest().apply(requestBlock), action)
 
     enum class Type(val value: String) {
         PRE_MATCH("PreMatch"),

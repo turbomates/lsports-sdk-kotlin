@@ -2,12 +2,12 @@ package com.turbomates.kotlin.lsports.sdk
 
 import com.rabbitmq.client.ConnectionFactory
 
-class LSportsConfig {
-    lateinit var username: String
-    lateinit var password: String
-    lateinit var inPlayPackageId: String
-    lateinit var preMatchPackageId: String
-
+data class LSportsConfig(
+    val username: String,
+    val password: String,
+    val inPlayPackageId: String,
+    val preMatchPackageId: String
+) {
     var apiRequestTimeoutMillis = 60L * 1000L
     var requestHeartbeat: Int = 580
     var isAutomaticRecoveryEnabled: Boolean = true

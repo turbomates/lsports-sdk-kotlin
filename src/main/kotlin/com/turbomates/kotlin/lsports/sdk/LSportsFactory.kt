@@ -8,9 +8,7 @@ import com.turbomates.kotlin.lsports.sdk.listener.Listener
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-class LSportsFactory(configuration: LSportsConfig.() -> Unit) {
-    private val config = LSportsConfig().apply(configuration)
-
+class LSportsFactory(private val config: LSportsConfig) {
     fun inPlayListener(
         handler: Handler,
         prefetchSize: Int = 20,

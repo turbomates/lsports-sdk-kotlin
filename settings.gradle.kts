@@ -4,13 +4,12 @@ enableFeaturePreview("VERSION_CATALOGS")
 dependencyResolutionManagement {
     versionCatalogs {
         create("deps") {
-            version("ktor", "2.0.3")
+            version("ktor", "2.2.2")
             version("log4j", "2.17.1")
-            version("kotlin", "1.6.10")
+            version("kotlin", "1.9.0")
             version("detekt", "1.19.0")
-            version("rabbitmq_amqp_client", "5.14.0")
+            version("rabbitmq_amqp_client", "5.19.0")
             version("test_logger", "3.0.0")
-            version("kotlinx", "0.3.2")
             version("nexus_staging", "0.30.0")
 
             alias("log4j_slf4j").to("org.apache.logging.log4j", "log4j-slf4j-impl").versionRef("log4j")

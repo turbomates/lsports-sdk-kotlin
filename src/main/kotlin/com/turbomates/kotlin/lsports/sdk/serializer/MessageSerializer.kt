@@ -20,7 +20,7 @@ object MessageSerializer : JsonContentPolymorphicSerializer<Message>(Message::cl
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<out Message> {
         val typeValue = element.jsonObject["Header"]?.jsonObject?.get("Type")?.jsonPrimitive?.content?.toInt()
-            ?: throw IllegalStateException("Message must contains Type value")
+            ?: error("Message must contains Type value")
 
         return when (typeValue) {
             Message.Type.FIXTURE_UPDATE.value -> FixtureUpdateMessage.serializer()

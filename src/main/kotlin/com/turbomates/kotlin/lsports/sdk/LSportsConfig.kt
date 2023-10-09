@@ -1,5 +1,7 @@
 package com.turbomates.kotlin.lsports.sdk
 
+import com.rabbitmq.client.ConnectionFactory
+
 class LSportsConfig {
     lateinit var username: String
     lateinit var password: String

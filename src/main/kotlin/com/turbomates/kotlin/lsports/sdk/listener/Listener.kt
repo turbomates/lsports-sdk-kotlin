@@ -1,31 +1,34 @@
 package com.turbomates.kotlin.lsports.sdk.listener
 
-import com.rabbitmq.client.ConnectionFactory
-import com.turbomates.kotlin.lsports.sdk.LSportsConfig
+import com.rabbitmq.client.Connection
 import java.io.Closeable
+import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
-abstract class Listener(private val config: LSportsConfig) : Closeable {
-    lateinit var consumer: Consumer
-
-    protected val connectionFactory = ConnectionFactory().apply {
-        port = config.port
-        username = config.username
-        password = config.password
-        requestedHeartbeat = config.requestHeartbeat
-        networkRecoveryInterval = config.networkRecoveryInterval
-        isAutomaticRecoveryEnabled = config.isAutomaticRecoveryEnabled
+class Listener(
+    private val connection: Connection,
+    private val handler: Handler,
+    private val queue: String,
+    prefetchSize: Int,
+    private val context: String,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+) : Closeable {
+    private val channel = connection.createChannel().apply {
+        basicQos(prefetchSize, false)
     }
 
-    abstract suspend fun listen(handler: Handler, prefetchSize: Int = 1)
+    fun run() {
+        channel.basicConsume(
+            queue, false,
+            DeliverCallbackListener(ConcurrentHashMap(), handler, channel, context, dispatcher),
+            CancelCallbackListener()
+        )
+    }
 
     override fun close() {
-        try {
-            consumer.close()
-        } catch (expected: Exception) {
-            if (expected is UninitializedPropertyAccessException)
-                throw UninitializedPropertyAccessException("Consumer has not been initialized")
-
-            throw expected
-        }
+        channel.close()
+        connection.close()
     }
 }
+

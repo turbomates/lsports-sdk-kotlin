@@ -1,8 +1,6 @@
 package com.turbomates.kotlin.lsports.sdk.listener
 
-import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Channel
-import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
 import com.turbomates.kotlin.lsports.sdk.listener.message.EventsMessage
@@ -14,67 +12,35 @@ import com.turbomates.kotlin.lsports.sdk.listener.message.MarketUpdateMessage
 import com.turbomates.kotlin.lsports.sdk.listener.message.Message
 import com.turbomates.kotlin.lsports.sdk.listener.message.SettlementsMessage
 import com.turbomates.kotlin.lsports.sdk.serializer.MessageSerializer
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.Closeable
 
-class Consumer(
-    private val handler: Handler,
-    private val connection: Connection,
-    private val queueName: String,
-    private val prefetchSize: Int
-) : Closeable {
-    private val logger = LoggerFactory.getLogger(javaClass)
-    private val messagesQueues = mutableMapOf<Long, MutableList<MessageData>>()
-    private val channel = connection.createChannel().apply {
-        basicQos(prefetchSize, false)
-    }
-
-    private lateinit var consumerTag: String
-
-    fun consume() {
-        consumerTag = channel.basicConsume(
-            queueName, false,
-            DeliverCallbackListener(messagesQueues, handler, channel, logger),
-            CancelCallbackListener(this, logger)
-        )
-    }
-
-    override fun close() {
-        try {
-            if (channel.isOpen) {
-                channel.close()
-            }
-        } finally {
-            if (connection.isOpen) {
-                connection.close()
-            }
-        }
-    }
-}
-
-private class DeliverCallbackListener(
+internal class DeliverCallbackListener(
     private val messagesQueues: MutableMap<Long, MutableList<MessageData>>,
     private val handler: Handler,
     private val channel: Channel,
-    private val logger: Logger
-) : CoroutineScope by CoroutineScope(Dispatchers.Default), DeliverCallback {
+    context: String,
+    dispatcher: CoroutineDispatcher = Dispatchers.Default,
+) : CoroutineScope by CoroutineScope(dispatcher), DeliverCallback {
+    private val logger = LoggerFactory.getLogger(javaClass.packageName + ".$context")
     override fun handle(consumerTag: String?, delivery: Delivery) {
         val deliveryTag = delivery.envelope.deliveryTag
         val deliveryBody = String(delivery.body)
+        logger.debug("$consumerTag receive deliveryTag: $deliveryTag")
         try {
             Json.decodeFromString(MessageSerializer, deliveryBody).let { message ->
+                logger.debug("{} receive message id: {}", consumerTag, message.header.msgGuid)
                 when (message) {
-                    is FixtureUpdateMessage -> asyncHandleWithEvents(message, deliveryTag)
-                    is LivescoreUpdateMessage -> asyncHandleWithEvents(message, deliveryTag)
-                    is MarketUpdateMessage -> asyncHandleWithEvents(message, deliveryTag)
-                    is SettlementsMessage -> asyncHandleWithEvents(message, deliveryTag)
-                    is KeepAliveMessage -> syncHandle(message, deliveryTag)
-                    is HeartbeatMessage -> syncHandle(message, deliveryTag)
+                    is FixtureUpdateMessage -> asyncHandleOrderedEvents(message, deliveryTag)
+                    is LivescoreUpdateMessage -> asyncHandleOrderedEvents(message, deliveryTag)
+                    is MarketUpdateMessage -> asyncHandleOrderedEvents(message, deliveryTag)
+                    is SettlementsMessage -> asyncHandleOrderedEvents(message, deliveryTag)
+                    is KeepAliveMessage -> async(message, deliveryTag)
+                    is HeartbeatMessage -> async(message, deliveryTag)
                     else -> throw MessageSerializer.UnimplementedMessageTypeException(
                         Message.Type.values().first { it.value == message.header.type.value }
                     )
@@ -88,13 +54,13 @@ private class DeliverCallbackListener(
         } catch (logging: Throwable) {
             logger.error("Listener <$consumerTag> was cancelled. Error: ${logging.message}; Message: $deliveryBody")
             if (channel.isOpen) {
-                channel.basicNack(delivery.envelope.deliveryTag, false, true)
+                channel.basicNack(deliveryTag, false, true)
             }
             throw logging
         }
     }
 
-    private fun syncHandle(message: Message, deliveryTag: Long) = launch {
+    private fun async(message: Message, deliveryTag: Long) = launch {
         handle(message)
         if (channel.isOpen) {
             channel.basicAck(deliveryTag, false)
@@ -113,7 +79,7 @@ private class DeliverCallbackListener(
         )
     }
 
-    private fun asyncHandleWithEvents(message: EventsMessage, deliveryTag: Long) {
+    private fun asyncHandleOrderedEvents(message: EventsMessage, deliveryTag: Long) {
         val fixtureIds = message.body.events.map { it.fixtureId }
         if (fixtureIds.isNotEmpty()) {
             val messageData = MessageData(message, deliveryTag)
@@ -149,18 +115,4 @@ private class DeliverCallbackListener(
     }
 }
 
-private class CancelCallbackListener(
-    private val consumer: Consumer,
-    private val logger: Logger
-) : CancelCallback {
-    override fun handle(consumerTag: String?) {
-        val message = "Listener was cancelled $consumerTag"
-        logger.error(message)
-        consumer.close()
-        throw CancelCallbackListenerException(message)
-    }
-
-    private class CancelCallbackListenerException(message: String) : Exception(message)
-}
-
-private data class MessageData(val message: EventsMessage, val deliveryTag: Long)
+internal data class MessageData(val message: EventsMessage, val deliveryTag: Long)

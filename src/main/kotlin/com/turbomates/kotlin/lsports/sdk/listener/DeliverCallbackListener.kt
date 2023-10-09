@@ -26,7 +26,7 @@ internal class DeliverCallbackListener(
     context: String,
     dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : CoroutineScope by CoroutineScope(dispatcher), DeliverCallback {
-    private val logger = LoggerFactory.getLogger(javaClass.packageName + ".$context")
+    private val logger = LoggerFactory.getLogger(DeliverCallbackListener::class.java.packageName + ".$context")
     override fun handle(consumerTag: String?, delivery: Delivery) {
         val deliveryTag = delivery.envelope.deliveryTag
         val deliveryBody = String(delivery.body)

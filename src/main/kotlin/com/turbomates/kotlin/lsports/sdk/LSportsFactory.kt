@@ -9,12 +9,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 class LSportsFactory(private val config: LSportsConfig) {
+    private val connectionFactory = rabbitConnectionFactory()
     fun inPlayListener(
         handler: Handler,
         prefetchSize: Int = 20,
         coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
     ): Listener {
-        val connection = rabbitConnectionFactory().apply {
+        val connection = connectionFactory.apply{
             host = config.inPlayHost
             virtualHost = config.inPlayVirtualHost
         }.newConnection()
@@ -33,7 +34,7 @@ class LSportsFactory(private val config: LSportsConfig) {
         prefetchSize: Int = 20,
         coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
     ): Listener {
-        val connection = rabbitConnectionFactory().apply {
+        val connection = connectionFactory.apply {
             host = config.preMatchHost
             virtualHost = config.preMatchVirtualHost
         }.newConnection()

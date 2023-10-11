@@ -13,7 +13,8 @@ open class EnumWithValueSerializer<T : Enum<*>, TVal : Any>(
     val serializer: T.() -> TVal,
     val deserializer: (value: TVal) -> T,
 ) : KSerializer<T> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(serialName, valueSerializer.descriptor.kind as PrimitiveKind)
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor(serialName, valueSerializer.descriptor.kind as PrimitiveKind)
 
     override fun serialize(encoder: Encoder, value: T) {
         encoder.encodeSerializableValue(valueSerializer, serializer(value))
@@ -21,6 +22,12 @@ open class EnumWithValueSerializer<T : Enum<*>, TVal : Any>(
 
     override fun deserialize(decoder: Decoder): T {
         val value = decoder.decodeSerializableValue(valueSerializer)
-        return deserializer(value)
+        return try {
+            deserializer(value)
+        } catch (transient: Throwable) {
+            throw DeserializeException("error deserializing ${descriptor.serialName} with value $value", transient)
+        }
     }
 }
+
+class DeserializeException(message: String, parent: Throwable) : Exception(message, parent)

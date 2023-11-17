@@ -16,6 +16,7 @@ data class Statistic(
 ) {
     @Serializable(with = TypeSerializer::class)
     enum class Type(val value: Int) {
+        NOT_SET(0),
         CORNERS(1),
         SHOTS_ON_TARGET(2),
         SHOTS_OFF_TARGET(3),

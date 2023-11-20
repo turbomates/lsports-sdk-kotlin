@@ -141,13 +141,14 @@ data class Statistic(
         SET_OFFENSE_SUBS(1069),
         INJURY_WHILE_WE_HAVE_POSSESSIONS(1070),
         INJURY_WHILE_THEY_HAVE_POSSESSIONS(1071),
-        OFFSIDE_AGAINST_US(1072)
+        OFFSIDE_AGAINST_US(1072),
+        UNKNOWN(-1)
     }
 
     private class TypeSerializer : EnumWithValueSerializer<Type, Int>(
         "StatisticType",
         Int.serializer(),
         { value },
-        { v -> Type.values().first { it.value == v } }
+        { v -> Type.entries.firstOrNull { it.value == v } ?: Type.UNKNOWN }
     )
 }

@@ -37,7 +37,7 @@ internal class DeliverCallbackListener(
                 logger.debug("{} receive message id: {}", consumerTag, message.header.msgGuid)
                 when (message) {
                     is FixtureUpdateMessage -> asyncHandleOrderedEvents(message, deliveryTag)
-                    is LivescoreUpdateMessage -> asyncHandleOrderedEvents(message, deliveryTag)
+                    is LivescoreUpdateMessage -> async(message, deliveryTag)
                     is MarketUpdateMessage -> asyncHandleOrderedEvents(message, deliveryTag)
                     is SettlementsMessage -> asyncHandleOrderedEvents(message, deliveryTag)
                     is KeepAliveMessage -> async(message, deliveryTag)

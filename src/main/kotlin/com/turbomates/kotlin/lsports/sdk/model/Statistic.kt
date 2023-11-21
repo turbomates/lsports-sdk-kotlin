@@ -142,6 +142,9 @@ data class Statistic(
         INJURY_WHILE_WE_HAVE_POSSESSIONS(1070),
         INJURY_WHILE_THEY_HAVE_POSSESSIONS(1071),
         OFFSIDE_AGAINST_US(1072),
+        FALL_OF_WICKETS(1076),
+        ASSISTS(2034),
+        DEATHS(2078),
         UNKNOWN(-1)
     }
 

@@ -76,8 +76,8 @@ class MessageSerializerTest {
 
     @Test
     fun `heartbeat message deserialization`() {
-        val incomeData =
-            "{\"Header\":{\"Type\":32,\"MsgGuid\":\"eab44cc7-8070-4f39-9a6d-3ccf10916dc5\",\"ServerTimestamp\":1641989939}}"
+        val incomeData = "{\"Header\":{\"Type\":32,\"MsgGuid\":\"eab44cc7-8070-4f39-9a6d-3ccf10916dc5\",\"ServerTimestamp\":1641989939}}"
+
         val message = Json.decodeFromString(MessageSerializer, incomeData)
 
         Assertions.assertTrue(message is HeartbeatMessage)

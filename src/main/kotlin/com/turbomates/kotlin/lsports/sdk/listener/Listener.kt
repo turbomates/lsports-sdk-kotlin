@@ -1,6 +1,9 @@
 package com.turbomates.kotlin.lsports.sdk.listener
 
+import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
+import com.rabbitmq.client.ConsumerShutdownSignalCallback
+import com.rabbitmq.client.ShutdownSignalException
 import java.io.Closeable
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,11 +21,12 @@ class Listener(
         basicQos(prefetchSize, false)
     }
 
-    fun run() {
+    fun run(block: (consumerTag: String?, channel: Channel) -> Unit) {
         channel.basicConsume(
             queue, false,
             DeliverCallbackListener(ConcurrentHashMap(), handler, channel, context, dispatcher),
-            CancelCallbackListener()
+            CancelCallbackListener(channel, block),
+            ShutdownSignalCallback(channel)
         )
     }
 

@@ -1,7 +1,5 @@
 package com.turbomates.kotlin.lsports.sdk
 
-import com.rabbitmq.client.ConnectionFactory
-
 data class LSportsConfig(
     val username: String,
     val password: String,

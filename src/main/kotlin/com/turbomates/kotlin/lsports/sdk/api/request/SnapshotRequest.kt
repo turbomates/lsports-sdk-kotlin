@@ -10,6 +10,8 @@ import java.time.OffsetDateTime
 
 @Serializable
 data class SnapshotRequest(
+    @SerialName("Timestamp")
+    var timestmap: OffsetDateTime? = null,
     @SerialName("FromDate")
     var fromDate: OffsetDateTime? = null,
     @SerialName("ToDate")

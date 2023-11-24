@@ -12,8 +12,12 @@ internal class ShutdownSignalCallback(
         sig: ShutdownSignalException,
         channel: Channel
     ) -> Unit = { _, _, _ ->
-        channel.connection.close()
-        channel.close()
+        if (channel.connection.isOpen) {
+            channel.connection.close()
+        }
+        if (channel.isOpen) {
+            channel.close()
+        }
         exitProcess(-1)
     }
 ) : ConsumerShutdownSignalCallback {

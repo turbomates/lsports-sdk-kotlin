@@ -21,12 +21,15 @@ class Listener(
         basicQos(prefetchSize, false)
     }
 
-    fun run(block: (consumerTag: String?, channel: Channel) -> Unit) {
+    fun run(
+        cancelBlock: ((consumerTag: String?, channel: Channel) -> Unit)? = null,
+        shutdownBlock: ((consumerTag: String?, sig: ShutdownSignalException, channel: Channel) -> Unit)? = null
+    ) {
         channel.basicConsume(
             queue, false,
             DeliverCallbackListener(ConcurrentHashMap(), handler, channel, context, dispatcher),
-            CancelCallbackListener(channel, block),
-            ShutdownSignalCallback(channel)
+            CancelCallbackListener(channel, cancelBlock),
+            ShutdownSignalCallback(channel, shutdownBlock)
         )
     }
 

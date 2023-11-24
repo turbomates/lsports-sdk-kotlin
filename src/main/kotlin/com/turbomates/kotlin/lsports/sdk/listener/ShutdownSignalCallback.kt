@@ -7,11 +7,17 @@ import kotlin.system.exitProcess
 
 internal class ShutdownSignalCallback(
     private val channel: Channel,
-    private val block: (
+    shutdownBlock: ((
         consumerTag: String?,
         sig: ShutdownSignalException,
         channel: Channel
-    ) -> Unit = { _, _, _ ->
+    ) -> Unit)? = null
+) : ConsumerShutdownSignalCallback {
+    private var block: (
+        consumerTag: String?,
+        sig: ShutdownSignalException,
+        channel: Channel
+    ) -> Unit = { _, _,_ ->
         if (channel.connection.isOpen) {
             channel.connection.close()
         }
@@ -20,7 +26,13 @@ internal class ShutdownSignalCallback(
         }
         exitProcess(-1)
     }
-) : ConsumerShutdownSignalCallback {
+
+    init {
+        if (shutdownBlock != null) {
+            block = shutdownBlock
+        }
+    }
+
     override fun handleShutdownSignal(consumerTag: String?, sig: ShutdownSignalException) {
         block(consumerTag, sig, channel)
     }

@@ -6,7 +6,12 @@ import kotlin.system.exitProcess
 
 internal class CancelCallbackListener(
     private val channel: Channel,
-    private val block: (
+    cancelBlock: ((
+        consumerTag: String?,
+        channel: Channel
+    ) -> Unit)? = null
+) : CancelCallback {
+    private var block: (
         consumerTag: String?,
         channel: Channel
     ) -> Unit = { _, _ ->
@@ -18,7 +23,13 @@ internal class CancelCallbackListener(
         }
         exitProcess(-1)
     }
-) : CancelCallback {
+
+    init {
+        if (cancelBlock != null) {
+            block = cancelBlock
+        }
+    }
+
     override fun handle(consumerTag: String?) {
         block(consumerTag, channel)
     }

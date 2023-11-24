@@ -34,8 +34,12 @@ class Listener(
     }
 
     override fun close() {
-        channel.close()
-        connection.close()
+        if (channel.isOpen) {
+            channel.close()
+        }
+        if (connection.isOpen) {
+            connection.close()
+        }
     }
 }
 

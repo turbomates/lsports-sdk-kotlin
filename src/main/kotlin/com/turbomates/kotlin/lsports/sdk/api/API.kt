@@ -6,6 +6,7 @@ import com.turbomates.kotlin.lsports.sdk.api.request.LeaguesRequest
 import com.turbomates.kotlin.lsports.sdk.api.request.MarketsRequest
 import com.turbomates.kotlin.lsports.sdk.api.request.Request
 import com.turbomates.kotlin.lsports.sdk.api.request.SnapshotRequest
+import com.turbomates.kotlin.lsports.sdk.api.request.SubscribedFixturesRequest
 import com.turbomates.kotlin.lsports.sdk.api.request.TranslationRequest
 import com.turbomates.kotlin.lsports.sdk.api.response.CompetitionsResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.DistributionResponse
@@ -16,6 +17,7 @@ import com.turbomates.kotlin.lsports.sdk.api.response.MarketsResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.Response
 import com.turbomates.kotlin.lsports.sdk.api.response.SnapshotResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.SportsResponse
+import com.turbomates.kotlin.lsports.sdk.api.response.SubscribedFixturesResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.TracksResponse
 import com.turbomates.kotlin.lsports.sdk.api.response.TranslationResponse
 import com.turbomates.kotlin.lsports.sdk.model.Language
@@ -108,6 +110,9 @@ abstract class API(val config: LSportsConfig, val type: Type) {
         requestBlock: SnapshotRequest.() -> Unit = {}
     ): SnapshotResponse =
         snapshotRequest(SnapshotRequest().apply(requestBlock), action)
+
+    suspend fun subscribedFixtures(requestBlock: SubscribedFixturesRequest.() -> Unit): SubscribedFixturesResponse =
+        request("${config.apiUrl}/Fixtures/Get", SubscribedFixturesRequest().apply(requestBlock))
 
     enum class Type(val value: String) {
         PRE_MATCH("PreMatch"),
